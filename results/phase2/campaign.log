@@ -1,0 +1,8 @@
+[notched_plate] ref naive 11.0s, sysala 10.2s
+  mon_iteration_k0.0     act=0.108 save(scalar) vs sysala=0.049 vs naive=0.274 wall=-0.01 it=102 | err u=9.1e-14 sig_rms=6.4e-13 alpha_rel_final=2.9e-14 R=1.1e-13
+  mon_iteration_k0.5     act=0.108 save(scalar) vs sysala=0.560 vs naive=0.664 wall=+0.12 it=98 | err u=4.6e-04 sig_rms=3.3e-03 alpha_rel_final=2.1e-05 R=2.3e-04
+  mon_iteration_k1.0     act=0.108 save(scalar) vs sysala=0.517 vs naive=0.631 wall=+0.14 it=102 | err u=9.1e-14 sig_rms=6.4e-13 alpha_rel_final=2.9e-14 R=1.1e-13
+  mon_iteration_k2.0     act=0.108 save(scalar) vs sysala=0.436 vs naive=0.569 wall=+0.13 it=102 | err u=9.1e-14 sig_rms=6.4e-13 alpha_rel_final=2.9e-14 R=1.1e-13
+  mon_iteration_k5.0     act=0.108 save(scalar) vs sysala=0.233 vs naive=0.414 wall=+0.12 it=102 | err u=9.1e-14 sig_rms=6.4e-13 alpha_rel_final=2.9e-14 R=1.1e-13
+  mon_predictor_k0.0     act=0.108 save(scalar) vs sysala=0.016 vs naive=0.248 wall=-0.01 it=127 | err u=1.1e-10 sig_rms=1.1e-09 alpha_rel_final=8.0e-11 R=8.2e-11
+  mon_predictor_k0.5     act=0.108 save(scalar) vs sysala=0.449 vs naive=0.579 wall=+0.03 it=123 | err u=4.6e-04 sig_rms=3.3e-03 alpha_rel_final=2.1e-05 R=2.3e-04

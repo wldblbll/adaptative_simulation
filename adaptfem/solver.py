@@ -22,9 +22,9 @@ class Cost:
     COUNTERS = ("gp_integrations", "gp_plastic", "local_newton_iters", "element_K",
                 "element_fint", "element_extrapolated", "assemblies_K", "assemblies_f",
                 "factorizations", "solves", "newton_iters", "steps", "full_steps",
-                "orchestrator_decisions")
+                "orchestrator_decisions", "gp_monitored", "elements_woken_in_iteration")
     TIMERS = ("strain", "constitutive", "element_K", "element_fint", "assembly",
-              "factorization", "solve", "orchestrator", "extrapolation", "total")
+              "factorization", "solve", "orchestrator", "extrapolation", "diagnostics", "total")
 
     def __init__(self):
         self.c = {k: 0 for k in self.COUNTERS}
@@ -53,25 +53,29 @@ class Cost:
 @dataclass
 class State:
     """Converged material state at every Gauss point (flattened: index = el*NGP + g)."""
-    stress: np.ndarray      # (ngp,4)
+    stress: np.ndarray      # (ngp,4) anchor stress (last integration)
+    stress_hat: np.ndarray  # (ngp,4) stress used in equilibrium (= stress for integrated elements)
     eps_p: np.ndarray       # (ngp,4)
     alpha: np.ndarray       # (ngp,)
+    beta: np.ndarray        # (ngp,4) back-stress
     plastic: np.ndarray     # (ngp,) bool  (plastic at the last integration)
     D: np.ndarray           # (ngp,3,3) consistent tangent at the last integration
     eps: np.ndarray         # (ngp,3) strain at the last integration
     Ke: np.ndarray          # (nel,8,8) element tangent at the last integration
-    fe: np.ndarray          # (nel,8) element internal force at the last integration
+    fe: np.ndarray          # (nel,8) element internal force used in equilibrium
+    fe_anchor: np.ndarray   # (nel,8) element internal force at the last integration
+    ue_anchor: np.ndarray   # (nel,8) element displacement at the last integration
 
     @classmethod
     def zeros(cls, nel, C3):
         ngp = nel * NGP
-        return cls(np.zeros((ngp, 4)), np.zeros((ngp, 4)), np.zeros(ngp),
+        return cls(np.zeros((ngp, 4)), np.zeros((ngp, 4)), np.zeros((ngp, 4)), np.zeros(ngp), np.zeros((ngp, 4)),
                    np.zeros(ngp, bool), np.broadcast_to(C3, (ngp, 3, 3)).copy(),
-                   np.zeros((ngp, 3)), np.zeros((nel, 8, 8)), np.zeros((nel, 8)))
+                   np.zeros((ngp, 3)), np.zeros((nel, 8, 8)), np.zeros((nel, 8)), np.zeros((nel, 8)), np.zeros((nel, 8)))
 
     def copy(self):
         return State(*(getattr(self, f).copy() for f in
-                       ("stress", "eps_p", "alpha", "plastic", "D", "eps", "Ke", "fe")))
+                       ("stress", "stress_hat", "eps_p", "alpha", "beta", "plastic", "D", "eps", "Ke", "fe", "fe_anchor", "ue_anchor")))
 
 
 @dataclass
@@ -82,11 +86,16 @@ class StepRecord:
     residuals: list
     reaction: float
     active_fraction: float = 1.0
+    active: np.ndarray = None
 
 
 class FEModel:
     def __init__(self, elements, material, fixed_dofs, ubar, load_history, fext=None,
-                 tol=1e-8, maxit=25, record_history=False, record_tangent=True):
+                 tol=1e-8, maxit=25, record_history=False, record_tangent=True,
+                 reuse_elastic_K=False, modified_newton_below=0.0):
+        """reuse_elastic_K: 'Sysala' reference mode -- elements with no plastic Gauss
+        point reuse the precomputed elastic element stiffness instead of recomputing
+        B^T C B (numerically identical; changes only the cost counters/timers)."""
         self.el = elements
         self.mat = material
         self.ndof = elements.ndof
@@ -99,8 +108,12 @@ class FEModel:
         self.tol, self.maxit = tol, maxit
         self.record_history = record_history
         self.record_tangent = record_tangent
+        self.reuse_elastic_K = reuse_elastic_K
+        self.modified_newton_below = modified_newton_below   # reuse the predictor LU while active fraction < this
+        self.Ke_elastic = elements.element_K(np.broadcast_to(material.C3, (elements.nel, NGP, 3, 3)))
         self.cost = Cost()
-        self.history = {"eps": [], "stress": [], "eps_p": [], "alpha": [], "plastic": [],
+        self.eps_cur = np.zeros((self.nel * NGP, 3))   # scratch: current strain at every GP
+        self.history = {"eps": [], "stress": [], "eps_p": [], "alpha": [], "beta": [], "plastic": [],
                         "D": [], "u": [], "n_iter": [], "lam": [], "reaction": [],
                         "gp_plastic": [], "active": [], "residuals": []}
         self.records = []
@@ -109,54 +122,70 @@ class FEModel:
     # ---------------------------------------------------------------------
     def integrate_elements(self, u, state_prev, el, state_work):
         """Integrate the constitutive law on elements `el` (index array) from the
-        converged state `state_prev`; write results into `state_work`. Returns nothing."""
+        converged state `state_prev`; write results into `state_work`."""
+        if el.size == 0:
+            return
         c = self.cost
         gp = (el[:, None] * NGP + np.arange(NGP)[None]).ravel()
         with c.timer("strain"):
             eps = self.el.strains(u, el).reshape(-1, 3)
         with c.timer("constitutive"):
-            sig, ep, al, pl, D, nit = self.mat.integrate(
-                eps, state_prev.eps_p[gp], state_prev.alpha[gp], need_tangent=True)
+            sig, ep, al, be, pl, D, nit = self.mat.integrate(
+                eps, state_prev.eps_p[gp], state_prev.alpha[gp], state_prev.beta[gp], need_tangent=True)
         c.add("gp_integrations", gp.size)
         c.add("gp_plastic", int(pl.sum()))
         c.add("local_newton_iters", nit)
         state_work.stress[gp] = sig
+        state_work.stress_hat[gp] = sig
+        self.eps_cur[gp] = eps
         state_work.eps_p[gp] = ep
         state_work.alpha[gp] = al
+        state_work.beta[gp] = be
         state_work.plastic[gp] = pl
         state_work.D[gp] = D
         state_work.eps[gp] = eps
         with c.timer("element_fint"):
             state_work.fe[el] = self.el.element_fint(sig[:, _PS3].reshape(-1, NGP, 3), el)
+        state_work.fe_anchor[el] = state_work.fe[el]
+        state_work.ue_anchor[el] = u[self.el.dofs[el]]
         c.add("element_fint", el.size)
-        with c.timer("element_K"):
-            state_work.Ke[el] = self.el.element_K(D.reshape(-1, NGP, 3, 3), el)
-        c.add("element_K", el.size)
+        if self.reuse_elastic_K:
+            has_pl = pl.reshape(-1, NGP).any(1)
+            el_pl = el[has_pl]
+            state_work.Ke[el[~has_pl]] = self.Ke_elastic[el[~has_pl]]
+            if el_pl.size:
+                with c.timer("element_K"):
+                    state_work.Ke[el_pl] = self.el.element_K(D.reshape(-1, NGP, 3, 3)[has_pl], el_pl)
+            c.add("element_K", el_pl.size)
+        else:
+            with c.timer("element_K"):
+                state_work.Ke[el] = self.el.element_K(D.reshape(-1, NGP, 3, 3), el)
+            c.add("element_K", el.size)
 
     def extrapolate_elements(self, u, state_prev, el, state_work):
-        """Lazy path: no constitutive call. Stress is linearised about the last integrated
-        state with the stored tangent; Ke is reused; fe = fe_last + Ke (u - u_last) computed
-        from the strain increment (same flops as an elastic element residual)."""
+        """Lazy path: no constitutive call, no Gauss-point loop. The element force is the
+        exact linearisation about the anchor: f_e = f_e0 + K_e0 (u_e - u_e0), which equals
+        int B^T (sig0 + D0 B du) with the stored consistent tangent. Internal variables,
+        stress, tangent and stiffness block stay at the anchor until wake-up."""
         if el.size == 0:
             return
         c = self.cost
-        gp = (el[:, None] * NGP + np.arange(NGP)[None]).ravel()
         with c.timer("extrapolation"):
-            eps = self.el.strains(u, el).reshape(-1, 3)
-            deps = eps - state_prev.eps[gp]
-            dsig3 = np.einsum("nij,nj->ni", state_prev.D[gp], deps)
-            sig = state_prev.stress[gp].copy()
-            sig[:, _PS3] += dsig3
-            # zz component: plane-strain elastic-like update (not used in equilibrium)
-            state_work.stress[gp] = sig
-            state_work.eps[gp] = state_prev.eps[gp]       # keep the anchor strain
-            state_work.eps_p[gp] = state_prev.eps_p[gp]
-            state_work.alpha[gp] = state_prev.alpha[gp]
-            state_work.plastic[gp] = state_prev.plastic[gp]
-            state_work.D[gp] = state_prev.D[gp]
-            state_work.Ke[el] = state_prev.Ke[el]
-            state_work.fe[el] = self.el.element_fint(sig[:, _PS3].reshape(-1, NGP, 3), el)
+            due = u[self.el.dofs[el]] - state_prev.ue_anchor[el]
+            state_work.fe[el] = state_prev.fe_anchor[el] + np.einsum("nij,nj->ni", state_prev.Ke[el], due)
         c.add("element_extrapolated", el.size)
+
+    def stress_hat(self, u, state_prev, el):
+        """Extrapolated stress and current strain at the Gauss points of elements `el`
+        (used by the orchestrator to monitor, and for diagnostics)."""
+        gp = (el[:, None] * NGP + np.arange(NGP)[None]).ravel()
+        eps = self.el.strains(u, el).reshape(-1, 3)
+        deps = eps - state_prev.eps[gp]
+        dsig3 = np.einsum("nij,nj->ni", state_prev.D[gp], deps)
+        sig = state_prev.stress[gp].copy()
+        sig[:, _PS3] += dsig3
+        sig[:, 2] += self.mat.nu * (dsig3[:, 0] + dsig3[:, 1])
+        return sig, eps, gp
 
     # ---------------------------------------------------------------------
     def solve_step(self, k, u_prev, state_prev, active=None, orchestrator=None):
@@ -172,6 +201,7 @@ class FEModel:
             active = all_el
         quiet = np.setdiff1d(all_el, active)
         state = state_prev.copy()
+        self._state_work = state
         residuals = []
         converged = False
         # Tangent predictor (standard in displacement control): linearise the internal
@@ -194,6 +224,15 @@ class FEModel:
         for it in range(self.maxit + 1):
             self.integrate_elements(u, state_prev, active, state)
             self.extrapolate_elements(u, state_prev, quiet, state)
+            if orchestrator is not None and quiet.size and (orchestrator.cfg.monitor_when == "iteration"
+                    or (orchestrator.cfg.monitor_when in ("predictor", "predictor_only") and it == 0)):
+                with c.timer("orchestrator"):
+                    wake = orchestrator.monitor(k, it, u, state_prev, state, quiet, self)
+                if wake is not None and wake.size:
+                    active = np.union1d(active, wake)
+                    quiet = np.setdiff1d(quiet, wake)
+                    self.integrate_elements(u, state_prev, wake, state)
+                    c.add("elements_woken_in_iteration", wake.size)
             with c.timer("assembly"):
                 fint = self.el.assemble_fint(state.fe)
             c.add("assemblies_f")
@@ -203,18 +242,45 @@ class FEModel:
             rn = np.linalg.norm(Rf) / ref
             residuals.append(rn)
             if rn < self.tol:
-                converged = True
-                break
+                # converged with the current active set: verify the quiet elements once;
+                # if any must wake, integrate them and keep iterating (still exact for
+                # elastic-anchored elements: nothing is accepted without a passed check)
+                if orchestrator is not None and quiet.size and orchestrator.cfg.monitor_when in ("converged", "predictor"):
+                    with c.timer("orchestrator"):
+                        wake = orchestrator.monitor(k, it, u, state_prev, state, quiet, self)
+                    if wake is not None and wake.size:
+                        active = np.union1d(active, wake)
+                        quiet = np.setdiff1d(quiet, wake)
+                        self.integrate_elements(u, state_prev, wake, state)
+                        c.add("elements_woken_in_iteration", wake.size)
+                        with c.timer("assembly"):
+                            fint = self.el.assemble_fint(state.fe)
+                        c.add("assemblies_f")
+                        R = fext - fint; Rf = R[self.free]
+                        rn = np.linalg.norm(Rf) / max(np.linalg.norm(fint), np.linalg.norm(fext), 1e-12)
+                        residuals.append(rn)
+                        if rn >= self.tol and it < self.maxit:
+                            pass
+                        else:
+                            converged = rn < self.tol
+                            break
+                    else:
+                        converged = True
+                        break
+                else:
+                    converged = True
+                    break
             if it == self.maxit:
                 break
-            with c.timer("assembly"):
-                Kdata = self.el.assemble_K_data(state.Ke)
-                K = self.el.csr(Kdata)
-                Kff = K[self.free][:, self.free].tocsc()
-            c.add("assemblies_K")
-            with c.timer("factorization"):
-                lu = splu(Kff)
-            c.add("factorizations")
+            if not (self.modified_newton_below > 0 and active.size < self.modified_newton_below * self.nel):
+                with c.timer("assembly"):
+                    Kdata = self.el.assemble_K_data(state.Ke)
+                    K = self.el.csr(Kdata)
+                    Kff = K[self.free][:, self.free].tocsc()
+                c.add("assemblies_K")
+                with c.timer("factorization"):
+                    lu = splu(Kff)
+                c.add("factorizations")
             with c.timer("solve"):
                 du = lu.solve(Rf)
             c.add("solves")
@@ -226,17 +292,24 @@ class FEModel:
         c.add("steps")
         if active.size == self.nel:
             c.add("full_steps")
+        if quiet.size:
+            with c.timer("diagnostics"):
+                sig, eps, gp = self.stress_hat(u, state_prev, quiet)
+                state.stress_hat[gp] = sig
+                self.eps_cur[gp] = eps
         reaction = float(fint[self.reaction_dofs].sum()) if self.reaction_dofs is not None else 0.0
-        rec = StepRecord(k, lam, len(residuals) - 1, residuals, reaction, active.size / self.nel)
+        act = np.zeros(self.nel, bool); act[active] = True
+        rec = StepRecord(k, lam, len(residuals) - 1, residuals, reaction, active.size / self.nel, act)
         # quiet elements keep their anchor (last integrated) state: only the extrapolated
         # stress is provisional. For history we store the *provisional* stress on quiet
         # elements, and flag them.
         if self.record_history:
             h = self.history
             h["eps"].append(self.el.strains(u).reshape(-1, 3).astype(np.float64))
-            h["stress"].append(state.stress.copy())
+            h["stress"].append(state.stress_hat.copy())
             h["eps_p"].append(state.eps_p.copy())
             h["alpha"].append(state.alpha.copy())
+            h["beta"].append(state.beta.copy())
             h["plastic"].append(state.plastic.copy())
             if self.record_tangent:
                 h["D"].append(state.D.astype(np.float32))
@@ -245,7 +318,6 @@ class FEModel:
             h["lam"].append(lam)
             h["reaction"].append(reaction)
             h["gp_plastic"].append(state.plastic.reshape(self.nel, NGP).sum(1).astype(np.int8))
-            act = np.zeros(self.nel, bool); act[active] = True
             h["active"].append(act)
             h["residuals"].append(np.array(residuals))
         return u, state, rec

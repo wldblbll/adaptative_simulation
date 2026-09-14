@@ -7,6 +7,8 @@ from .material import J2Material
 from .solver import FEModel
 
 STEEL = dict(E=200e3, nu=0.3, sig_y0=250.0, H=1000.0, sig_inf=400.0, delta=20.0)
+# combined hardening for cyclic cases: Bauschinger effect makes reverse yielding frequent
+STEEL_KIN = dict(E=200e3, nu=0.3, sig_y0=250.0, H=500.0, sig_inf=320.0, delta=20.0, Hk=4000.0)
 
 
 @dataclass
@@ -101,6 +103,19 @@ def notched_plate_overload(h=0.5, **kw):
     return notched_plate(h=h, u_max=0.12, name="notched_overload", **kw)
 
 
+def cyclic_notched_kin(h=0.5, **kw):
+    c = cyclic_notched_plate(h=h, mat=STEEL_KIN, **kw)
+    c.name = "cyclic_notched_kin"
+    return c
+
+
+def cyclic_cantilever_kin(h=0.5, **kw):
+    c = cyclic_cantilever(h=h, mat=STEEL_KIN, **kw)
+    c.name = "cyclic_cantilever_kin"
+    return c
+
+
 CASES = {"notched_plate": notched_plate, "notched_overload": notched_plate_overload,
-         "cantilever": cantilever,
+         "cantilever": cantilever, "cyclic_notched_kin": cyclic_notched_kin,
+         "cyclic_cantilever_kin": cyclic_cantilever_kin,
          "cyclic_notched": cyclic_notched_plate, "cyclic_cantilever": cyclic_cantilever}

@@ -33,9 +33,9 @@ def measure_costs(el, mat, n_el=None, seed=0):
     eps_p_ = rng.normal(0, 1, (ngp, 3))            # plastic strains: fixed magnitude, random direction
     eps_p_ *= 6e-3 / np.linalg.norm(eps_p_, axis=1)[:, None]
     ep0 = np.zeros((ngp, 4)); a0 = np.zeros(ngp)
-    sig, ep, al, pl, D, _ = mat.integrate(eps_p_, ep0, a0)
+    sig, ep, al, be, pl, D, _ = mat.integrate(eps_p_, ep0, a0)
     assert pl.all(), "benchmark: plastic batch is not fully plastic"
-    assert not mat.integrate(eps_e, ep0, a0)[3].any(), "benchmark: elastic batch is plastic"
+    assert not mat.integrate(eps_e, ep0, a0)[4].any(), "benchmark: elastic batch is plastic"
     out = {}
     # vectorised -----------------------------------------------------------
     t_strain = _bench(lambda: el.strains(u, idx))
@@ -49,13 +49,19 @@ def measure_costs(el, mat, n_el=None, seed=0):
     t_asmK = _bench(lambda: el.assemble_K_data(Ke, idx))
     t_asmf = _bench(lambda: el.assemble_fint(fe, idx))
     deps = rng.normal(0, 1e-4, (ngp, 3))
+    ue0 = rng.normal(0, 1e-4, (n_el, 8))
     def extrap():
+        due = u[el.dofs[idx]] - ue0
+        fe + np.einsum("nij,nj->ni", Ke, due)
+    t_x = _bench(extrap)
+    b0 = np.zeros((ngp, 4))
+    def monitor():
         e = el.strains(u, idx).reshape(-1, 3)
         ds = np.einsum("nij,nj->ni", D, e - deps)
         s = sig.copy(); s[:, _PS3] += ds
-        el.element_fint(s[:, _PS3].reshape(n_el, NGP, 3), idx)
-    t_x = _bench(extrap)
-    out["vector"] = dict(
+        mat.yield_function(s, a0, b0)
+    t_mon = _bench(monitor)
+    out["vector"] = dict(monitor_gp=t_mon / ngp,
         strain_gp=t_strain / ngp, trial_gp=t_el / ngp, return_gp=max(t_pl - t_el, 0) / ngp,
         K_el=t_K / n_el, fint_el=t_f / n_el, asmK_el=t_asmK / n_el, asmf_el=t_asmf / n_el,
         extrap_el=t_x / n_el)
@@ -88,13 +94,16 @@ def measure_costs(el, mat, n_el=None, seed=0):
                 B[e, g] @ ue
     def scal_x():
         for e in range(me):
+            fe[e] + Ke[e] @ (u[el.dofs[e]] - ue0[e])
+    def scal_mon():
+        for e in range(me):
             ue = u[el.dofs[e]]
-            f = np.zeros(8)
             for g in range(NGP):
+                i = e * NGP + g
                 e_ = B[e, g] @ ue
-                s3 = sg[e, g] + Dg[e, g] @ (e_ - deps[e * NGP + g])
-                f += w[e, g] * (B[e, g].T @ s3)
-    out["scalar"] = dict(
+                s3 = sig[i, _PS3] + Dg[e, g] @ (e_ - deps[i])
+                mat.yield_function_scalar([s3[0], s3[1], sig[i, 2], s3[2]], a0[i], b0[i])
+    out["scalar"] = dict(monitor_gp=_bench(scal_mon, 3) / (me * NGP),
         strain_gp=_bench(scal_strain, 3) / (me * NGP), trial_gp=t_sel, return_gp=max(t_spl - t_sel, 0),
         K_el=_bench(scal_K, 3) / me, fint_el=_bench(scal_f, 3) / me,
         asmK_el=out["vector"]["asmK_el"], asmf_el=out["vector"]["asmf_el"],
@@ -103,6 +112,7 @@ def measure_costs(el, mat, n_el=None, seed=0):
         d["active_el_elastic"] = NGP * (d["strain_gp"] + d["trial_gp"]) + d["K_el"] + d["fint_el"] + d["asmK_el"] + d["asmf_el"]
         d["active_el_plastic"] = d["active_el_elastic"] + NGP * d["return_gp"]
         d["quiet_el"] = d["extrap_el"] + d["asmf_el"]
+        d["monitor_el"] = NGP * d["monitor_gp"]
         d["ratio_plastic_elastic"] = d["active_el_plastic"] / d["active_el_elastic"]
         d["ratio_quiet_elastic"] = d["quiet_el"] / d["active_el_elastic"]
     return out

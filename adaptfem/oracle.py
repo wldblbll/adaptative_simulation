@@ -37,7 +37,8 @@ def oracle_greedy(hist, mat, nel, tol, extrapolator="tangent", max_skip=None,
     lazy_sig = np.zeros((T, nel)); lazy_al = np.zeros((T, nel))
     # state at "step -1" = virgin state
     sig_m1 = np.zeros((ngp, 4)); eps_m1 = np.zeros((ngp, 3)); D_m1 = np.broadcast_to(mat.C3, (ngp, 3, 3))
-    epsp_m1 = np.zeros((ngp, 4)); al_m1 = np.zeros(ngp)
+    epsp_m1 = np.zeros((ngp, 4)); al_m1 = np.zeros(ngp); be_m1 = np.zeros((ngp, 4))
+    beta = hist.get("beta", np.zeros_like(epsp))
     gpi = np.arange(ngp)
 
     def gather(arr, arr_m1, kk):
@@ -72,8 +73,8 @@ def oracle_greedy(hist, mat, nel, tol, extrapolator="tangent", max_skip=None,
         integrated[k] = ~ok
         if check_lazy:
             # deferred integration from the anchor state to the true strain at step k
-            ep0 = gather(epsp, epsp_m1, kg); a0 = gather(alpha, al_m1, kg)
-            s_l, ep_l, a_l, pl_l, _, _ = mat.integrate(eps[k], ep0, a0, need_tangent=False)
+            ep0 = gather(epsp, epsp_m1, kg); a0 = gather(alpha, al_m1, kg); b0 = gather(beta, be_m1, kg)
+            s_l, ep_l, a_l, b_l, pl_l, _, _ = mat.integrate(eps[k], ep0, a0, b0, need_tangent=False)
             lazy_sig[k] = _inplane_err(s_l[:, _PS3] - sig[k][:, _PS3], mat.sig_y0).reshape(nel, NGP).max(1)
             lazy_al[k] = np.abs(a_l - alpha[k]).reshape(nel, NGP).max(1)
         k0[~ok] = k
