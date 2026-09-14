@@ -79,8 +79,8 @@ d'un code compilé par élément). Coût d'un élément-itération, moyenne des 
 
 | modèle | élément actif élastique | élément actif plastique | élément calme (extrapolé) | ratio plast./élast. | ratio calme/élast. |
 |---|---|---|---|---|---|
-| scalar | 57–60 µs | 168–183 µs | 26–29 µs | 2.9–3.0 | 0.45–0.49 |
-| vector | 4.0–4.3 µs | 5.0–5.5 µs | 0.8 µs | 1.28 | 0.19–0.20 |
+| scalar | 54–56 µs | 160–165 µs | 25–26 µs | 2.9–3.0 | 0.46–0.48 |
+| vector | 3.9–4.1 µs | 5.0–5.1 µs | 0.8 µs | 1.25–1.28 | 0.19–0.20 |
 
 Le coût « calme » n'est pas nul : il inclut le calcul de la déformation, le produit
 D·Δε et la force interne (mêmes flops qu'un résidu élastique). Les timings varient
@@ -139,23 +139,22 @@ appliqué **par-dessus** Sysala. Modèle de coût `scalar` :
 
 | cas | Sysala vs naïf | oracle vs naïf (0.2 % / 1 % / 5 %) | **oracle vs Sysala** (0.2 % / 1 % / 5 %) |
 |---|---|---|---|
-| plaque entaillée | 0.25 | 0.53 / 0.56 / 0.57 | **0.37 / 0.40 / 0.43** |
-| plaque surchargée | 0.16 | 0.59 / 0.64 / 0.67 | **0.51 / 0.57 / 0.61** |
-| console | 0.23 | 0.57 / 0.60 / 0.62 | **0.45 / 0.48 / 0.51** |
-| plaque cyclique | 0.28 | 0.51 / 0.53 / 0.55 | **0.32 / 0.35 / 0.37** |
-| console cyclique | 0.22 | 0.53 / 0.56 / 0.59 | **0.39 / 0.44 / 0.48** |
+| plaque entaillée | 0.24 | 0.55 / 0.57 / 0.59 | **0.40 / 0.44 / 0.46** |
+| plaque surchargée | 0.15 | 0.59 / 0.64 / 0.67 | **0.51 / 0.57 / 0.61** |
+| console | 0.23 | 0.55 / 0.58 / 0.60 | **0.42 / 0.46 / 0.48** |
+| plaque cyclique | 0.29 | 0.51 / 0.53 / 0.55 | **0.31 / 0.34 / 0.36** |
+| console cyclique | 0.23 | 0.52 / 0.55 / 0.58 | **0.38 / 0.42 / 0.46** |
 
-Avec le modèle `vector` (calme beaucoup moins cher), oracle vs naïf 0.74–0.80 ; oracle vs
-Sysala 0.27–0.54. Avec le modèle abstrait (élastique = 1, plastique = 3, calme = ρ) :
-ρ = 0 donne 0.92–0.98, ρ = 0.25 donne 0.70–0.80, ρ = 0.5 donne 0.50–0.60. **Le
+Avec le modèle `vector` (calme beaucoup moins cher), oracle vs naïf 0.76–0.79 à 1 % ; oracle vs
+Sysala 0.31–0.55. Avec le modèle abstrait (élastique = 1, plastique = 3, calme = ρ) :
+ρ = 0 donne 0.92–0.95, ρ = 0.25 donne 0.72–0.77, ρ = 0.5 donne 0.50–0.61 (à 1 %). **Le
 potentiel est piloté au premier ordre par le coût résiduel de l'élément calme**, plus
 que par la tolérance : entre 0.2 % et 5 % la variation n'est que de quelques points.
 
 ### 4.4 Ce que le potentiel ne couvre pas : la part du solveur linéaire
 
 Part du temps total passée au niveau élémentaire (déformations, loi, K^e, f^e,
-assemblage) dans ce code : 0.27 (plaque), 0.28 (surchargée, cyclique), 0.42–0.43
-(console). Le reste est essentiellement la factorisation LU (SuperLU). Un gain de 50 %
+assemblage) dans ce code : 0.27–0.28 (plaques), 0.42 (consoles). Le reste est essentiellement la factorisation LU (SuperLU). Un gain de 50 %
 au niveau élémentaire vaut donc 14 à 21 % de temps total ici. Deux remarques :
 
 - Cette part est propre à un code 2D Python avec loi J2 simple. Pour des lois coûteuses
@@ -185,8 +184,8 @@ rendre le cas cyclique plus discriminant sur la question du réveil (H1).
 ## 5. Décision : GO, avec deux réserves explicites
 
 Le critère de sortie (potentiel pondéré ≥ 25–30 %) est atteint sur les cinq cas, y compris
-**contre la ligne de base forte** (réutilisation de la tangente élastique) : 32 à 61 % du
-coût élémentaire (modèle scalar), 27 à 54 % (modèle vector). Réserves :
+**contre la ligne de base forte** (réutilisation de la tangente élastique) : 31 à 61 % du
+coût élémentaire (modèle scalar), 31 à 55 % (modèle vector). Réserves :
 
 1. **C'est une borne haute.** L'oracle voit la trajectoire vraie ; en ligne,
    l'extrapolation modifie l'équilibre et l'erreur se propage. L'extrapolation tangente
