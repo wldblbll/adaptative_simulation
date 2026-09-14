@@ -1,0 +1,34 @@
+{
+ "notched_plate": {
+  "ideal_exact": 0.6053861069004371,
+  "oracle_tangent_1pct": 0.8907050079599564,
+  "oracle_tangent_0p2pct": 0.8509433226473289,
+  "online_exact_kappa1": 0.5174172126207928,
+  "plastic_frac_mean": 0.0804801894918174,
+  "plastic_cost_share": 0.35274720809889354
+ },
+ "cantilever": {
+  "ideal_exact": 0.558729291117341,
+  "oracle_tangent_1pct": 0.8959226097745201,
+  "oracle_tangent_0p2pct": 0.8571388420561933,
+  "online_exact_kappa1": 0.4862785080012616,
+  "plastic_frac_mean": 0.1246,
+  "plastic_cost_share": 0.4043638465474763
+ },
+ "cyclic_notched_kin": {
+  "ideal_exact": 0.7374647825696743,
+  "oracle_tangent_1pct": 0.871130531930968,
+  "oracle_tangent_0p2pct": 0.837600691970503,
+  "online_exact_kappa1": 0.5692581159827614,
+  "plastic_frac_mean": 0.03632439194454698,
+  "plastic_cost_share": 0.21249421907585275
+ },
+ "cyclic_cantilever_kin": {
+  "ideal_exact": 0.5712678510740274,
+  "oracle_tangent_1pct": 0.8523408788337568,
+  "oracle_tangent_0p2pct": 0.798468457745851,
+  "online_exact_kappa1": 0.45601756314149156,
+  "plastic_frac_mean": 0.11573333333333333,
+  "plastic_cost_share": 0.3897714067966116
+ }
+}

@@ -1,0 +1,112 @@
+train case notched_R3_H20_L40: 165896 samples, 0.102 near-yield
+train case notched_R5_H20_L40: 159546 samples, 0.102 near-yield
+train case notched_R4_H16_L40: 128406 samples, 0.106 near-yield
+train case notched_R4_H24_L40: 197914 samples, 0.097 near-yield
+train case notched_R2.5_H18_L40: 149586 samples, 0.107 near-yield
+training set (801348, 12) (51s)
+gbm_q10 seed 0 fit 9.1s
+gbm_q10 seed 1 fit 13.9s
+gbm_q05 seed 0 fit 13.5s
+gbm_q05 seed 1 fit 13.6s
+gbm_q02 seed 0 fit 9.0s
+gbm_q02 seed 1 fit 11.5s
+[family_unseen] notched_R4_H20_L40: prediction MAE/unsafe on near-yield samples: {'gbm_q10_0': {'mae': 1.4077519638617821, 'unsafe': 0.17123947051744887}, 'gbm_q10_1': {'mae': 1.4182417733210189, 'unsafe': 0.17346570397111913}, 'gbm_q05_0': {'mae': 1.6479760966784358, 'unsafe': 0.13291215403128762}, 'gbm_q05_1': {'mae': 1.6260059739138473, 'unsafe': 0.11859205776173286}, 'gbm_q02_0': {'mae': 2.068855382830322, 'unsafe': 0.09717208182912154}, 'gbm_q02_1': {'mae': 2.0790270543845595, 'unsafe': 0.08718411552346571}, 'heuristic': {'mae': 6.2429704925635265, 'unsafe': 0.0}}
+   kappa    {'monitor_skip_kappa': 0.0}                   seed=None save=0.050 (no-decision 0.050) mon/step=29219 it=102/102 | u=9.1e-14 a=2.9e-14
+   kappa    {'monitor_skip_kappa': 1.0}                   seed=None save=0.516 (no-decision 0.516) mon/step=4101 it=102/102 | u=9.1e-14 a=2.9e-14
+   kappa    {'monitor_skip_kappa': 1.5}                   seed=None save=0.476 (no-decision 0.476) mon/step=6232 it=102/102 | u=9.1e-14 a=2.9e-14
+   kappa    {'monitor_skip_kappa': 2.0}                   seed=None save=0.435 (no-decision 0.435) mon/step=8447 it=102/102 | u=9.1e-14 a=2.9e-14
+   kappa    {'monitor_skip_kappa': 3.0}                   seed=None save=0.360 (no-decision 0.360) mon/step=12505 it=102/102 | u=9.1e-14 a=2.9e-14
+   oracle   {'horizon_safety': 1.0}                       seed=None save=0.558 (no-decision 0.558) mon/step=1850 it=102/102 | u=1.9e-13 a=1.6e-13
+   oracle   {'horizon_safety': 0.5}                       seed=None save=0.509 (no-decision 0.509) mon/step=4480 it=102/102 | u=9.1e-14 a=2.9e-14
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q10'}    seed=0 save=0.553 (no-decision 0.572) mon/step=2096 it=120/102 | u=1.2e-02 a=6.2e-02
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q10'}    seed=0 save=0.523 (no-decision 0.546) mon/step=4135 it=105/102 | u=7.9e-03 a=7.9e-03
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q10'}    seed=1 save=0.540 (no-decision 0.564) mon/step=2177 it=117/102 | u=9.1e-03 a=1.9e-02
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q10'}    seed=1 save=0.530 (no-decision 0.560) mon/step=4160 it=107/102 | u=6.3e-03 a=3.3e-03
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q05'}    seed=0 save=0.493 (no-decision 0.520) mon/step=2803 it=113/102 | u=4.7e-03 a=3.6e-03
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q05'}    seed=0 save=0.513 (no-decision 0.545) mon/step=4276 it=104/102 | u=6.0e-03 a=3.5e-03
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q05'}    seed=1 save=0.530 (no-decision 0.555) mon/step=2330 it=111/102 | u=5.8e-03 a=3.9e-03
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q05'}    seed=1 save=0.499 (no-decision 0.533) mon/step=4270 it=108/102 | u=5.3e-03 a=2.6e-03
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q02'}    seed=0 save=0.513 (no-decision 0.533) mon/step=3188 it=110/102 | u=2.2e-03 a=2.8e-03
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q02'}    seed=0 save=0.481 (no-decision 0.508) mon/step=4809 it=102/102 | u=5.5e-05 a=1.5e-05
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q02'}    seed=1 save=0.521 (no-decision 0.543) mon/step=3223 it=112/102 | u=3.9e-03 a=2.7e-03
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q02'}    seed=1 save=0.484 (no-decision 0.514) mon/step=4612 it=102/102 | u=3.6e-04 a=6.8e-05
+[family_unseen] notched_R3.5_H22_L40: prediction MAE/unsafe on near-yield samples: {'gbm_q10_0': {'mae': 1.480812001715211, 'unsafe': 0.19822222222222222}, 'gbm_q10_1': {'mae': 1.4909246718406899, 'unsafe': 0.1922222222222222}, 'gbm_q05_0': {'mae': 1.7107533027387096, 'unsafe': 0.1393888888888889}, 'gbm_q05_1': {'mae': 1.6792162188025868, 'unsafe': 0.13427777777777777}, 'gbm_q02_0': {'mae': 2.1096656408732235, 'unsafe': 0.10172222222222223}, 'gbm_q02_1': {'mae': 2.1259092816819556, 'unsafe': 0.08761111111111111}, 'heuristic': {'mae': 6.264433745685661, 'unsafe': 0.0}}
+   kappa    {'monitor_skip_kappa': 0.0}                   seed=None save=0.066 (no-decision 0.066) mon/step=32613 it=102/102 | u=6.7e-14 a=2.1e-14
+   kappa    {'monitor_skip_kappa': 1.0}                   seed=None save=0.526 (no-decision 0.526) mon/step=5101 it=102/102 | u=6.7e-14 a=2.1e-14
+   kappa    {'monitor_skip_kappa': 1.5}                   seed=None save=0.483 (no-decision 0.483) mon/step=7670 it=102/102 | u=6.7e-14 a=2.1e-14
+   kappa    {'monitor_skip_kappa': 2.0}                   seed=None save=0.438 (no-decision 0.438) mon/step=10392 it=102/102 | u=6.7e-14 a=2.1e-14
+   kappa    {'monitor_skip_kappa': 3.0}                   seed=None save=0.354 (no-decision 0.354) mon/step=15410 it=102/102 | u=6.7e-14 a=2.1e-14
+   oracle   {'horizon_safety': 1.0}                       seed=None save=0.577 (no-decision 0.577) mon/step=2088 it=102/102 | u=9.4e-12 a=6.5e-12
+   oracle   {'horizon_safety': 0.5}                       seed=None save=0.528 (no-decision 0.528) mon/step=4968 it=102/102 | u=6.7e-14 a=2.1e-14
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q10'}    seed=0 save=0.591 (no-decision 0.609) mon/step=2604 it=107/102 | u=1.3e-02 a=5.4e-03
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q10'}    seed=0 save=0.537 (no-decision 0.558) mon/step=4660 it=109/102 | u=9.5e-03 a=7.5e-03
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q10'}    seed=1 save=0.623 (no-decision 0.646) mon/step=2191 it=115/102 | u=2.6e-02 a=1.1e-01
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q10'}    seed=1 save=0.545 (no-decision 0.577) mon/step=4457 it=108/102 | u=1.3e-02 a=1.5e-02
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q05'}    seed=0 save=0.541 (no-decision 0.567) mon/step=2938 it=107/102 | u=3.3e-03 a=2.8e-03
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q05'}    seed=0 save=0.525 (no-decision 0.558) mon/step=5184 it=103/102 | u=9.5e-03 a=4.4e-03
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q05'}    seed=1 save=0.544 (no-decision 0.570) mon/step=2744 it=116/102 | u=9.8e-03 a=1.5e-02
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q05'}    seed=1 save=0.507 (no-decision 0.542) mon/step=5259 it=108/102 | u=7.4e-03 a=5.2e-03
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q02'}    seed=0 save=0.538 (no-decision 0.556) mon/step=3610 it=106/102 | u=2.0e-03 a=2.0e-03
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q02'}    seed=0 save=0.489 (no-decision 0.515) mon/step=5775 it=102/102 | u=8.2e-05 a=2.5e-05
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q02'}    seed=1 save=0.535 (no-decision 0.558) mon/step=3407 it=108/102 | u=2.5e-03 a=1.9e-03
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q02'}    seed=1 save=0.492 (no-decision 0.524) mon/step=5448 it=103/102 | u=2.4e-04 a=1.2e-04
+[other] cantilever: prediction MAE/unsafe on near-yield samples: {'gbm_q10_0': {'mae': 2.3258496380264395, 'unsafe': 0.22599388379204893}, 'gbm_q10_1': {'mae': 2.3415383418799176, 'unsafe': 0.25688073394495414}, 'gbm_q05_0': {'mae': 2.299495731815706, 'unsafe': 0.28730886850152904}, 'gbm_q05_1': {'mae': 2.3830213874202775, 'unsafe': 0.23394495412844038}, 'gbm_q02_0': {'mae': 2.6032541100548325, 'unsafe': 0.22660550458715598}, 'gbm_q02_1': {'mae': 2.81666978392497, 'unsafe': 0.14434250764525994}, 'heuristic': {'mae': 5.617743004752425, 'unsafe': 0.0}}
+   kappa    {'monitor_skip_kappa': 0.0}                   seed=None save=0.063 (no-decision 0.063) mon/step=19802 it=97/97 | u=4.9e-13 a=2.2e-13
+   kappa    {'monitor_skip_kappa': 1.0}                   seed=None save=0.488 (no-decision 0.488) mon/step=2291 it=97/97 | u=4.9e-13 a=2.2e-13
+   kappa    {'monitor_skip_kappa': 1.5}                   seed=None save=0.458 (no-decision 0.458) mon/step=3515 it=97/97 | u=4.9e-13 a=2.2e-13
+   kappa    {'monitor_skip_kappa': 2.0}                   seed=None save=0.428 (no-decision 0.428) mon/step=4774 it=97/97 | u=4.9e-13 a=2.2e-13
+   kappa    {'monitor_skip_kappa': 3.0}                   seed=None save=0.361 (no-decision 0.361) mon/step=7544 it=97/97 | u=4.9e-13 a=2.2e-13
+   oracle   {'horizon_safety': 1.0}                       seed=None save=0.518 (no-decision 0.518) mon/step=1170 it=96/97 | u=1.6e-11 a=3.6e-11
+   oracle   {'horizon_safety': 0.5}                       seed=None save=0.478 (no-decision 0.478) mon/step=2694 it=97/97 | u=4.9e-13 a=2.2e-13
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q10'}    seed=0 save=0.495 (no-decision 0.514) mon/step=2068 it=96/97 | u=1.1e-02 a=1.7e-02
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q10'}    seed=0 save=0.443 (no-decision 0.468) mon/step=3110 it=101/97 | u=2.1e-03 a=1.1e-03
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q10'}    seed=1 save=0.481 (no-decision 0.513) mon/step=2193 it=98/97 | u=1.1e-02 a=1.4e-02
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q10'}    seed=1 save=0.426 (no-decision 0.465) mon/step=3129 it=103/97 | u=2.1e-03 a=1.2e-03
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q05'}    seed=0 save=0.501 (no-decision 0.529) mon/step=2316 it=105/97 | u=1.5e-02 a=1.8e-02
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q05'}    seed=0 save=0.451 (no-decision 0.490) mon/step=2827 it=99/97 | u=8.6e-03 a=3.5e-03
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q05'}    seed=1 save=0.488 (no-decision 0.519) mon/step=2301 it=101/97 | u=1.5e-02 a=2.1e-02
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q05'}    seed=1 save=0.450 (no-decision 0.495) mon/step=2849 it=100/97 | u=9.0e-03 a=3.8e-03
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q02'}    seed=0 save=0.452 (no-decision 0.477) mon/step=2283 it=101/97 | u=5.0e-03 a=1.9e-03
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q02'}    seed=0 save=0.436 (no-decision 0.468) mon/step=3046 it=98/97 | u=4.2e-04 a=1.1e-04
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q02'}    seed=1 save=0.470 (no-decision 0.499) mon/step=2261 it=102/97 | u=7.6e-03 a=2.5e-03
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q02'}    seed=1 save=0.429 (no-decision 0.466) mon/step=3007 it=99/97 | u=7.4e-04 a=1.4e-04
+[other] cyclic_notched_kin: prediction MAE/unsafe on near-yield samples: {'gbm_q10_0': {'mae': 3.0429635549486864, 'unsafe': 0.06366467302654343}, 'gbm_q10_1': {'mae': 2.998364427042754, 'unsafe': 0.08912065641836785}, 'gbm_q05_0': {'mae': 2.718190703966694, 'unsafe': 0.0959418713854975}, 'gbm_q05_1': {'mae': 2.7958680878386644, 'unsafe': 0.0875389254114972}, 'gbm_q02_0': {'mae': 3.0593772857720087, 'unsafe': 0.08393060155207355}, 'gbm_q02_1': {'mae': 3.5249664772585505, 'unsafe': 0.07374820819534378}, 'heuristic': {'mae': 6.0515916985950335, 'unsafe': 0.0}}
+   kappa    {'monitor_skip_kappa': 0.0}                   seed=None save=0.091 (no-decision 0.091) mon/step=30108 it=205/205 | u=8.9e-13 a=1.4e-13
+   kappa    {'monitor_skip_kappa': 1.0}                   seed=None save=0.579 (no-decision 0.579) mon/step=6980 it=205/205 | u=8.9e-13 a=1.4e-13
+   kappa    {'monitor_skip_kappa': 1.5}                   seed=None save=0.502 (no-decision 0.502) mon/step=10614 it=205/205 | u=8.9e-13 a=1.4e-13
+   kappa    {'monitor_skip_kappa': 2.0}                   seed=None save=0.430 (no-decision 0.430) mon/step=14025 it=205/205 | u=8.9e-13 a=1.4e-13
+   kappa    {'monitor_skip_kappa': 3.0}                   seed=None save=0.306 (no-decision 0.306) mon/step=19905 it=205/205 | u=8.9e-13 a=1.4e-13
+   oracle   {'horizon_safety': 1.0}                       seed=None save=0.696 (no-decision 0.697) mon/step=1709 it=203/205 | u=1.0e-10 a=4.0e-11
+   oracle   {'horizon_safety': 0.5}                       seed=None save=0.628 (no-decision 0.628) mon/step=4672 it=205/205 | u=8.7e-13 a=1.5e-13
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q10'}    seed=0 save=0.765 (no-decision 0.786) mon/step=2502 it=183/205 | u=2.0e-01 a=1.0e-01
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q10'}    seed=0 save=0.653 (no-decision 0.679) mon/step=4234 it=207/205 | u=2.9e-02 a=3.7e-02
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q10'}    seed=1 save=0.755 (no-decision 0.787) mon/step=2797 it=199/205 | u=2.1e-01 a=1.2e-01
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q10'}    seed=1 save=0.642 (no-decision 0.683) mon/step=4366 it=213/205 | u=1.4e-01 a=2.7e-02
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q05'}    seed=0 save=0.716 (no-decision 0.750) mon/step=2849 it=210/205 | u=2.2e-01 a=4.5e-02
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q05'}    seed=0 save=0.616 (no-decision 0.658) mon/step=4388 it=212/205 | u=3.0e-02 a=1.2e-02
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q05'}    seed=1 save=0.723 (no-decision 0.753) mon/step=2726 it=181/205 | u=9.9e-02 a=5.6e-02
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q05'}    seed=1 save=0.628 (no-decision 0.668) mon/step=4201 it=208/205 | u=3.1e-02 a=1.2e-02
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q02'}    seed=0 save=0.675 (no-decision 0.702) mon/step=2986 it=201/205 | u=1.5e-02 a=5.9e-03
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q02'}    seed=0 save=0.575 (no-decision 0.609) mon/step=5486 it=212/205 | u=1.9e-04 a=5.2e-05
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q02'}    seed=1 save=0.672 (no-decision 0.702) mon/step=3045 it=195/205 | u=2.4e-02 a=7.6e-03
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q02'}    seed=1 save=0.579 (no-decision 0.621) mon/step=5150 it=207/205 | u=8.5e-03 a=6.8e-03
+[other] cyclic_cantilever_kin: prediction MAE/unsafe on near-yield samples: {'gbm_q10_0': {'mae': 3.101483306905025, 'unsafe': 0.36351448901722183}, 'gbm_q10_1': {'mae': 3.188974597353431, 'unsafe': 0.37382695679076006}, 'gbm_q05_0': {'mae': 2.844267597835349, 'unsafe': 0.37197071259152314}, 'gbm_q05_1': {'mae': 2.8755426897804446, 'unsafe': 0.38444879859750436}, 'gbm_q02_0': {'mae': 3.058960218897382, 'unsafe': 0.23976487573476332}, 'gbm_q02_1': {'mae': 3.170988717449009, 'unsafe': 0.23409301845931732}, 'heuristic': {'mae': 5.982604245176468, 'unsafe': 0.0}}
+   kappa    {'monitor_skip_kappa': 0.0}                   seed=None save=0.068 (no-decision 0.068) mon/step=20691 it=212/212 | u=4.2e-12 a=4.0e-12
+   kappa    {'monitor_skip_kappa': 1.0}                   seed=None save=0.454 (no-decision 0.454) mon/step=4306 it=212/212 | u=4.2e-12 a=4.0e-12
+   kappa    {'monitor_skip_kappa': 1.5}                   seed=None save=0.395 (no-decision 0.395) mon/step=6814 it=212/212 | u=4.2e-12 a=4.0e-12
+   kappa    {'monitor_skip_kappa': 2.0}                   seed=None save=0.348 (no-decision 0.348) mon/step=8813 it=212/212 | u=4.2e-12 a=4.0e-12
+   kappa    {'monitor_skip_kappa': 3.0}                   seed=None save=0.217 (no-decision 0.217) mon/step=14396 it=212/212 | u=4.2e-12 a=4.0e-12
+   oracle   {'horizon_safety': 1.0}                       seed=None save=0.526 (no-decision 0.526) mon/step=1320 it=211/212 | u=2.3e-11 a=1.2e-11
+   oracle   {'horizon_safety': 0.5}                       seed=None save=0.487 (no-decision 0.487) mon/step=2891 it=212/212 | u=4.8e-12 a=9.8e-12
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q10'}    seed=0 save=0.509 (no-decision 0.537) mon/step=2067 it=220/212 | u=1.5e-01 a=2.1e-02
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q10'}    seed=0 save=0.448 (no-decision 0.477) mon/step=3003 it=219/212 | u=7.5e-02 a=7.5e-03
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q10'}    seed=1 save=0.542 (no-decision 0.578) mon/step=1716 it=212/212 | u=1.1e-01 a=2.5e-02
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q10'}    seed=1 save=0.436 (no-decision 0.480) mon/step=3028 it=222/212 | u=7.1e-02 a=3.8e-03
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q05'}    seed=0 save=0.460 (no-decision 0.501) mon/step=2314 it=240/212 | u=1.0e-01 a=2.5e-02
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q05'}    seed=0 save=0.416 (no-decision 0.459) mon/step=3360 it=224/212 | u=4.2e-02 a=2.0e-03
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q05'}    seed=1 save=0.490 (no-decision 0.534) mon/step=2200 it=234/212 | u=3.4e-01 a=4.7e-02
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q05'}    seed=1 save=0.408 (no-decision 0.455) mon/step=3277 it=223/212 | u=6.4e-02 a=2.5e-03
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q02'}    seed=0 save=0.462 (no-decision 0.497) mon/step=2495 it=211/212 | u=7.9e-02 a=7.5e-03
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q02'}    seed=0 save=0.432 (no-decision 0.470) mon/step=3744 it=199/212 | u=3.8e-03 a=1.6e-04
+   learned  {'horizon_safety': 1.0, 'name': 'gbm_q02'}    seed=1 save=0.460 (no-decision 0.500) mon/step=2394 it=219/212 | u=9.8e-02 a=1.3e-02
+   learned  {'horizon_safety': 0.5, 'name': 'gbm_q02'}    seed=1 save=0.433 (no-decision 0.471) mon/step=3595 it=202/212 | u=5.2e-03 a=2.9e-04

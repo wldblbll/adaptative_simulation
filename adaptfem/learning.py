@@ -91,6 +91,11 @@ class HorizonModel:
         if kind == "gbm":
             self.m = HistGradientBoostingRegressor(max_iter=300, learning_rate=0.08, max_leaf_nodes=31,
                                                    random_state=seed, loss="absolute_error")
+        elif kind.startswith("gbm_q"):
+            # conservative horizon: low quantile of the steps-to-yield distribution
+            q = float(kind[5:]) / 100.0
+            self.m = HistGradientBoostingRegressor(max_iter=300, learning_rate=0.08, max_leaf_nodes=31,
+                                                   random_state=seed, loss="quantile", quantile=q)
         elif kind == "linear":
             self.m = make_pipeline(StandardScaler(), Ridge(alpha=1.0))
         else:

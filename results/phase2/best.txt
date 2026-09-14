@@ -1,0 +1,12 @@
+cantilever               exact     best=mon_iteration_k1.0       save=0.486 (vector 0.471) wall=+0.14 err=2.2e-13
+cantilever               err<1e-3  best=mon_predictor_only_k0.5  save=0.518 (vector 0.486) wall=+0.12 err=2.9e-06
+cantilever               err<1e-2  best=D_drift_catch5           save=0.542 (vector 0.535) wall=+0.08 err=3.6e-03
+cyclic_cantilever_kin    exact     best=mon_iteration_k1.0       save=0.456 (vector 0.467) wall=+0.01 err=4.0e-12
+cyclic_cantilever_kin    err<1e-3  best=mon_predictor_only_k0.5  save=0.519 (vector 0.500) wall=+0.06 err=5.5e-06
+cyclic_cantilever_kin    err<1e-2  best=mon_predictor_only_k0.5  save=0.519 (vector 0.500) wall=+0.06 err=5.5e-06
+cyclic_notched_kin       exact     best=mon_iteration_k1.0       save=0.569 (vector 0.606) wall=+0.16 err=1.4e-13
+cyclic_notched_kin       err<1e-3  best=mon_predictor_only_k0.5  save=0.671 (vector 0.662) wall=+0.11 err=3.2e-04
+cyclic_notched_kin       err<1e-2  best=mon_step_k0.5            save=0.694 (vector 0.689) wall=+0.13 err=7.4e-03
+notched_plate            exact     best=mon_iteration_k1.0       save=0.517 (vector 0.514) wall=+0.14 err=2.9e-14
+notched_plate            err<1e-3  best=mon_predictor_only_k0.5  save=0.581 (vector 0.555) wall=+0.14 err=2.2e-05
+notched_plate            err<1e-2  best=mon_predictor_only_k0.5  save=0.581 (vector 0.555) wall=+0.14 err=2.2e-05

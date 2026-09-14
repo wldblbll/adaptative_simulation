@@ -108,3 +108,157 @@
   pl_drift_0.0001        act=0.075 save(scalar) vs sysala=0.455 vs naive=0.580 wall=-0.07 it=122 | err u=9.9e-04 sig_rms=5.8e-03 alpha_rel_final=1.9e-03 R=1.4e-03
   pl_drift_0.0003        act=0.055 save(scalar) vs sysala=0.418 vs naive=0.552 wall=-0.06 it=124 | err u=4.2e-03 sig_rms=2.0e-02 alpha_rel_final=1.1e-02 R=7.5e-03
   pl_drift_0.001         act=0.045 save(scalar) vs sysala=0.426 vs naive=0.558 wall=-0.09 it=127 | err u=1.8e-02 sig_rms=7.9e-02 alpha_rel_final=1.5e-01 R=3.9e-02
+  pl_drift_0.003         act=0.041 save(scalar) vs sysala=0.609 vs naive=0.699 wall=+0.13 it=88 | err u=4.6e-02 sig_rms=1.7e-01 alpha_rel_final=4.6e-02 R=1.0e-01
+  pl_drift_0.0001_nopred act=0.074 save(scalar) vs sysala=0.428 vs naive=0.559 wall=-0.09 it=127 | err u=9.9e-04 sig_rms=5.5e-03 alpha_rel_final=1.9e-03 R=1.4e-03
+  pl_drift_0.001_nopred  act=0.044 save(scalar) vs sysala=0.463 vs naive=0.586 wall=-0.03 it=118 | err u=2.3e-02 sig_rms=1.0e-01 alpha_rel_final=2.4e-01 R=5.2e-02
+  pl_drift_0.0001_nounload act=0.075 save(scalar) vs sysala=0.450 vs naive=0.576 wall=-0.11 it=122 | err u=9.9e-04 sig_rms=5.5e-03 alpha_rel_final=1.1e-03 R=1.4e-03
+  pl_drift_0.001_nounload act=0.043 save(scalar) vs sysala=0.487 vs naive=0.605 wall=-0.02 it=114 | err u=1.7e-02 sig_rms=8.2e-02 alpha_rel_final=1.2e-01 R=3.8e-02
+[cantilever] ref naive 4.6s, sysala 3.9s
+  pl_always              act=0.160 save(scalar) vs sysala=0.424 vs naive=0.548 wall=+0.06 it=97 | err u=4.9e-13 sig_rms=3.2e-12 alpha_rel_final=2.2e-13 R=1.2e-11
+  pl_drift_3e-05         act=0.146 save(scalar) vs sysala=0.436 vs naive=0.557 wall=+0.09 it=101 | err u=2.1e-05 sig_rms=7.0e-04 alpha_rel_final=4.6e-05 R=2.0e-05
+  pl_drift_0.0001        act=0.122 save(scalar) vs sysala=0.458 vs naive=0.574 wall=-0.01 it=114 | err u=1.2e-04 sig_rms=3.0e-03 alpha_rel_final=3.0e-04 R=3.5e-04
+  pl_drift_0.0003        act=0.080 save(scalar) vs sysala=0.493 vs naive=0.602 wall=+0.02 it=121 | err u=1.8e-03 sig_rms=2.2e-02 alpha_rel_final=2.1e-03 R=4.3e-03
+  pl_drift_0.001         act=0.062 save(scalar) vs sysala=0.299 vs naive=0.450 wall=-0.16 it=138 | err u=8.4e-03 sig_rms=8.3e-02 alpha_rel_final=7.6e-02 R=4.4e-02
+  pl_drift_0.003         FAILED: Newton did not converge at step 49 (lam=1.0000); residuals=[np.float64(0.5849462828290459), np.float64(0.7984098796684473), np.float64(0.6060051460720498), np.float64(0.6605964263124936), np.float64(0
+  pl_drift_0.0001_nopred act=0.122 save(scalar) vs sysala=0.437 vs naive=0.558 wall=+0.00 it=116 | err u=1.4e-04 sig_rms=3.3e-03 alpha_rel_final=3.0e-04 R=3.7e-04
+  pl_drift_0.001_nopred  act=0.061 save(scalar) vs sysala=0.230 vs naive=0.396 wall=-0.20 it=160 | err u=8.4e-03 sig_rms=9.0e-02 alpha_rel_final=1.1e-01 R=5.2e-02
+  pl_drift_0.0001_nounload act=0.122 save(scalar) vs sysala=0.458 vs naive=0.574 wall=+0.06 it=114 | err u=1.2e-04 sig_rms=3.0e-03 alpha_rel_final=3.0e-04 R=3.5e-04
+  pl_drift_0.001_nounload act=0.058 save(scalar) vs sysala=0.319 vs naive=0.466 wall=-0.07 it=136 | err u=8.4e-03 sig_rms=8.0e-02 alpha_rel_final=7.9e-02 R=4.4e-02
+[cyclic_notched_kin] ref naive 23.2s, sysala 20.6s
+  pl_always              act=0.055 save(scalar) vs sysala=0.447 vs naive=0.590 wall=+0.01 it=205 | err u=8.9e-13 sig_rms=9.2e-14 alpha_rel_final=1.4e-13 R=1.3e-13
+  pl_drift_3e-05         act=0.055 save(scalar) vs sysala=0.437 vs naive=0.582 wall=+0.06 it=208 | err u=8.9e-04 sig_rms=1.0e-03 alpha_rel_final=2.1e-03 R=8.8e-05
+  pl_drift_0.0001        act=0.051 save(scalar) vs sysala=0.409 vs naive=0.561 wall=+0.03 it=234 | err u=1.2e-02 sig_rms=7.7e-03 alpha_rel_final=1.1e-02 R=2.4e-03
+  pl_drift_0.0003        act=0.039 save(scalar) vs sysala=0.393 vs naive=0.550 wall=-0.06 it=259 | err u=7.8e-02 sig_rms=2.7e-02 alpha_rel_final=4.7e-02 R=1.7e-02
+  pl_drift_0.001         act=0.031 save(scalar) vs sysala=0.351 vs naive=0.519 wall=-0.12 it=275 | err u=3.5e-01 sig_rms=1.4e-01 alpha_rel_final=2.6e-01 R=1.0e-01
+  pl_drift_0.003         act=0.028 save(scalar) vs sysala=0.451 vs naive=0.593 wall=-0.00 it=234 | err u=8.2e-01 sig_rms=2.7e-01 alpha_rel_final=4.6e-01 R=2.5e-01
+  pl_drift_0.0001_nopred act=0.051 save(scalar) vs sysala=0.405 vs naive=0.559 wall=-0.00 it=234 | err u=1.2e-02 sig_rms=7.9e-03 alpha_rel_final=1.2e-02 R=2.3e-03
+  pl_drift_0.001_nopred  act=0.031 save(scalar) vs sysala=0.348 vs naive=0.517 wall=-0.14 it=278 | err u=3.7e-01 sig_rms=1.5e-01 alpha_rel_final=2.8e-01 R=1.1e-01
+  pl_drift_0.0001_nounload FAILED: Newton did not converge at step 125 (lam=1.0000); residuals=[np.float64(0.6991934670674008), np.float64(0.6790316060269237), np.float64(0.5002476303238423), np.float64(0.4931354074794908), np.float64(
+  pl_drift_0.001_nounload act=0.021 save(scalar) vs sysala=0.592 vs naive=0.698 wall=+0.40 it=82 | err u=6.0e+00 sig_rms=1.6e+00 alpha_rel_final=6.9e-01 R=1.5e+00
+[cyclic_cantilever_kin] ref naive 9.5s, sysala 8.5s
+  pl_always              act=0.137 save(scalar) vs sysala=0.341 vs naive=0.485 wall=+0.00 it=212 | err u=4.2e-12 sig_rms=3.3e-12 alpha_rel_final=4.0e-12 R=1.1e-11
+  pl_drift_3e-05         act=0.135 save(scalar) vs sysala=0.342 vs naive=0.486 wall=+0.13 it=215 | err u=1.2e-03 sig_rms=1.4e-03 alpha_rel_final=1.9e-03 R=3.4e-04
+  pl_drift_0.0001        act=0.120 save(scalar) vs sysala=0.335 vs naive=0.480 wall=+0.05 it=238 | err u=7.4e-03 sig_rms=8.2e-03 alpha_rel_final=7.9e-03 R=4.2e-03
+  pl_drift_0.0003        act=0.090 save(scalar) vs sysala=0.326 vs naive=0.473 wall=-0.10 it=284 | err u=3.3e-02 sig_rms=3.0e-02 alpha_rel_final=3.8e-02 R=1.5e-02
+  pl_drift_0.001         act=0.052 save(scalar) vs sysala=0.129 vs naive=0.320 wall=-0.23 it=336 | err u=1.1e-01 sig_rms=1.1e-01 alpha_rel_final=1.6e-01 R=9.7e-02
+  pl_drift_0.003         FAILED: Newton did not converge at step 61 (lam=-0.4800); residuals=[np.float64(0.423443955929612), np.float64(0.4579446439586177), np.float64(0.4160841075635231), np.float64(0.5076414632853138), np.float64(0
+  pl_drift_0.0001_nopred act=0.119 save(scalar) vs sysala=0.309 vs naive=0.460 wall=+0.04 it=242 | err u=7.4e-03 sig_rms=7.7e-03 alpha_rel_final=8.0e-03 R=3.6e-03
+  pl_drift_0.001_nopred  act=0.051 save(scalar) vs sysala=0.078 vs naive=0.279 wall=-0.27 it=371 | err u=1.1e-01 sig_rms=1.4e-01 alpha_rel_final=1.8e-01 R=1.3e-01
+  pl_drift_0.0001_nounload FAILED: Newton did not converge at step 104 (lam=1.0000); residuals=[np.float64(0.9321129004095341), np.float64(0.945099238756827), np.float64(0.9931569733783329), np.float64(0.9929405229982394), np.float64(0
+  pl_drift_0.001_nounload FAILED: Newton did not converge at step 104 (lam=1.0000); residuals=[np.float64(0.6490836531008229), np.float64(0.7575829535931498), np.float64(0.7681236307353028), np.float64(0.8026195921865742), np.float64(
+[notched_plate] ref naive 11.7s, sysala 10.2s
+  D_step_catch0          act=0.102 save(scalar) vs sysala=0.493 vs naive=0.611 wall=+0.05 it=104 | err u=7.6e-04 sig_rms=3.7e-03 alpha_rel_final=2.4e-04 R=1.4e-03
+  D_step_catch5          act=0.273 save(scalar) vs sysala=0.373 vs naive=0.519 wall=+0.03 it=107 | err u=7.6e-04 sig_rms=3.7e-03 alpha_rel_final=1.7e-04 R=1.4e-03
+  D_step_catch10         act=0.180 save(scalar) vs sysala=0.436 vs naive=0.567 wall=+0.05 it=105 | err u=7.6e-04 sig_rms=3.7e-03 alpha_rel_final=1.9e-04 R=1.4e-03
+  D_step_catch20         act=0.135 save(scalar) vs sysala=0.471 vs naive=0.594 wall=+0.05 it=104 | err u=7.6e-04 sig_rms=3.7e-03 alpha_rel_final=2.4e-04 R=1.4e-03
+  D_drift_catch0         act=0.045 save(scalar) vs sysala=0.418 vs naive=0.554 wall=-0.06 it=127 | err u=1.8e-02 sig_rms=7.9e-02 alpha_rel_final=1.5e-01 R=3.9e-02
+  D_drift_catch5         act=0.222 save(scalar) vs sysala=0.499 vs naive=0.615 wall=+0.13 it=91 | err u=2.7e-03 sig_rms=1.2e-02 alpha_rel_final=3.4e-03 R=4.2e-03
+  D_drift_catch10        act=0.124 save(scalar) vs sysala=0.565 vs naive=0.666 wall=+0.11 it=92 | err u=1.1e-02 sig_rms=4.5e-02 alpha_rel_final=6.2e-03 R=2.2e-02
+  D_drift_catch20        act=0.077 save(scalar) vs sysala=0.485 vs naive=0.605 wall=+0.03 it=109 | err u=2.0e-02 sig_rms=1.0e-01 alpha_rel_final=9.4e-02 R=5.3e-02
+  D_drift_skip3          act=0.270 save(scalar) vs sysala=0.426 vs naive=0.559 wall=-0.02 it=113 | err u=1.9e-03 sig_rms=9.7e-03 alpha_rel_final=3.1e-03 R=3.0e-03
+  D_drift_skip10         act=0.123 save(scalar) vs sysala=0.416 vs naive=0.552 wall=+0.02 it=112 | err u=9.8e-03 sig_rms=4.6e-02 alpha_rel_final=2.5e-02 R=2.2e-02
+[cantilever] ref naive 4.6s, sysala 3.9s
+  D_step_catch0          act=0.155 save(scalar) vs sysala=0.471 vs naive=0.575 wall=+0.06 it=97 | err u=4.7e-04 sig_rms=4.3e-03 alpha_rel_final=1.7e-04 R=1.5e-03
+  D_step_catch5          act=0.313 save(scalar) vs sysala=0.376 vs naive=0.499 wall=+0.09 it=96 | err u=4.7e-04 sig_rms=4.3e-03 alpha_rel_final=1.8e-04 R=1.5e-03
+  D_step_catch10         act=0.225 save(scalar) vs sysala=0.428 vs naive=0.540 wall=+0.12 it=96 | err u=4.7e-04 sig_rms=4.3e-03 alpha_rel_final=1.7e-04 R=1.5e-03
+  D_step_catch20         act=0.189 save(scalar) vs sysala=0.450 vs naive=0.558 wall=+0.10 it=96 | err u=4.7e-04 sig_rms=4.3e-03 alpha_rel_final=1.7e-04 R=1.5e-03
+  D_drift_catch0         act=0.062 save(scalar) vs sysala=0.351 vs naive=0.479 wall=-0.13 it=138 | err u=8.4e-03 sig_rms=8.3e-02 alpha_rel_final=7.6e-02 R=4.4e-02
+  D_drift_catch5         act=0.225 save(scalar) vs sysala=0.542 vs naive=0.632 wall=+0.08 it=95 | err u=2.6e-03 sig_rms=2.7e-02 alpha_rel_final=3.6e-03 R=1.5e-02
+  D_drift_catch10        act=0.134 save(scalar) vs sysala=0.544 vs naive=0.634 wall=+0.04 it=108 | err u=6.5e-03 sig_rms=5.1e-02 alpha_rel_final=1.5e-02 R=3.4e-02
+  D_drift_catch20        act=0.096 save(scalar) vs sysala=0.464 vs naive=0.569 wall=-0.03 it=118 | err u=7.7e-03 sig_rms=5.4e-02 alpha_rel_final=1.8e-02 R=3.7e-02
+  D_drift_skip3          act=0.281 save(scalar) vs sysala=0.488 vs naive=0.589 wall=+0.02 it=104 | err u=1.8e-03 sig_rms=1.9e-02 alpha_rel_final=3.2e-03 R=8.0e-03
+  D_drift_skip10         act=0.133 save(scalar) vs sysala=0.282 vs naive=0.423 wall=-0.13 it=138 | err u=8.4e-03 sig_rms=6.3e-02 alpha_rel_final=2.0e-02 R=4.4e-02
+[cyclic_notched_kin] ref naive 23.4s, sysala 20.6s
+  D_step_catch0          act=0.049 save(scalar) vs sysala=0.559 vs naive=0.677 wall=+0.02 it=217 | err u=1.3e-02 sig_rms=9.9e-03 alpha_rel_final=7.4e-03 R=4.1e-03
+  D_step_catch5          act=0.232 save(scalar) vs sysala=0.436 vs naive=0.587 wall=+0.02 it=213 | err u=1.2e-02 sig_rms=9.9e-03 alpha_rel_final=7.7e-03 R=4.0e-03
+  D_step_catch10         act=0.140 save(scalar) vs sysala=0.494 vs naive=0.630 wall=+0.04 it=216 | err u=1.3e-02 sig_rms=9.9e-03 alpha_rel_final=7.4e-03 R=4.0e-03
+  D_step_catch20         act=0.096 save(scalar) vs sysala=0.527 vs naive=0.655 wall=+0.05 it=216 | err u=1.3e-02 sig_rms=9.9e-03 alpha_rel_final=7.4e-03 R=4.0e-03
+  D_drift_catch0         act=0.031 save(scalar) vs sysala=0.320 vs naive=0.503 wall=-0.12 it=275 | err u=3.5e-01 sig_rms=1.4e-01 alpha_rel_final=2.6e-01 R=1.0e-01
+  D_drift_catch5         act=0.217 save(scalar) vs sysala=0.367 vs naive=0.537 wall=+0.07 it=199 | err u=2.2e-01 sig_rms=4.4e-02 alpha_rel_final=5.8e-02 R=3.4e-02
+  D_drift_catch10        act=0.124 save(scalar) vs sysala=0.375 vs naive=0.543 wall=-0.00 it=223 | err u=3.0e-01 sig_rms=7.4e-02 alpha_rel_final=7.0e-02 R=2.9e-02
+  D_drift_catch20        act=0.078 save(scalar) vs sysala=0.322 vs naive=0.504 wall=-0.05 it=253 | err u=3.8e-01 sig_rms=1.3e-01 alpha_rel_final=1.1e-01 R=1.0e-01
+  D_drift_skip3          act=0.267 save(scalar) vs sysala=0.317 vs naive=0.501 wall=-0.02 it=229 | err u=1.1e-01 sig_rms=4.2e-02 alpha_rel_final=5.2e-02 R=3.5e-02
+  D_drift_skip10         act=0.112 save(scalar) vs sysala=0.268 vs naive=0.465 wall=-0.07 it=259 | err u=2.5e-01 sig_rms=1.0e-01 alpha_rel_final=8.5e-02 R=8.2e-02
+[cyclic_cantilever_kin] ref naive 9.9s, sysala 8.5s
+  D_step_catch0          act=0.130 save(scalar) vs sysala=0.407 vs naive=0.535 wall=+0.03 it=223 | err u=6.6e-03 sig_rms=1.4e-02 alpha_rel_final=7.5e-04 R=7.0e-03
+  D_step_catch5          act=0.297 save(scalar) vs sysala=0.313 vs naive=0.461 wall=+0.06 it=222 | err u=6.6e-03 sig_rms=1.4e-02 alpha_rel_final=7.5e-04 R=7.1e-03
+  D_step_catch10         act=0.214 save(scalar) vs sysala=0.362 vs naive=0.500 wall=+0.10 it=221 | err u=6.5e-03 sig_rms=1.4e-02 alpha_rel_final=7.5e-04 R=7.0e-03
+  D_step_catch20         act=0.170 save(scalar) vs sysala=0.378 vs naive=0.513 wall=+0.13 it=222 | err u=6.6e-03 sig_rms=1.4e-02 alpha_rel_final=7.5e-04 R=7.0e-03
+  D_drift_catch0         act=0.052 save(scalar) vs sysala=0.157 vs naive=0.340 wall=-0.20 it=336 | err u=1.1e-01 sig_rms=1.1e-01 alpha_rel_final=1.6e-01 R=9.7e-02
+  D_drift_catch5         act=0.228 save(scalar) vs sysala=0.407 vs naive=0.535 wall=+0.10 it=220 | err u=1.2e-01 sig_rms=5.9e-02 alpha_rel_final=3.6e-02 R=7.4e-02
+  D_drift_catch10        act=0.140 save(scalar) vs sysala=0.288 vs naive=0.443 wall=-0.07 it=290 | err u=1.5e-01 sig_rms=8.5e-02 alpha_rel_final=5.6e-02 R=9.6e-02
+  D_drift_catch20        act=0.097 save(scalar) vs sysala=0.190 vs naive=0.365 wall=-0.19 it=332 | err u=1.8e-01 sig_rms=1.0e-01 alpha_rel_final=8.3e-02 R=1.1e-01
+  D_drift_skip3          act=0.268 save(scalar) vs sysala=0.312 vs naive=0.461 wall=-0.03 it=255 | err u=1.3e-01 sig_rms=5.7e-02 alpha_rel_final=4.2e-02 R=6.3e-02
+  D_drift_skip10         act=0.128 save(scalar) vs sysala=0.137 vs naive=0.324 wall=-0.21 it=329 | err u=8.9e-02 sig_rms=8.5e-02 alpha_rel_final=7.9e-02 R=8.1e-02
+[notched_plate] ref naive 11.8s, sysala 10.1s
+  C_nb0                  act=0.108 save(scalar) vs sysala=0.449 vs naive=0.576 wall=+0.04 it=102 | err u=9.1e-14 sig_rms=6.4e-13 alpha_rel_final=2.9e-14 R=1.1e-13
+  C_nb1                  act=0.304 save(scalar) vs sysala=0.339 vs naive=0.491 wall=+0.03 it=102 | err u=6.0e-14 sig_rms=3.5e-13 alpha_rel_final=1.1e-14 R=7.1e-14
+  C_nb2                  act=0.391 save(scalar) vs sysala=0.275 vs naive=0.442 wall=+0.03 it=102 | err u=5.8e-14 sig_rms=5.3e-13 alpha_rel_final=2.2e-14 R=5.3e-14
+  C_margin0.02           act=0.121 save(scalar) vs sysala=0.444 vs naive=0.572 wall=+0.04 it=102 | err u=6.7e-14 sig_rms=6.6e-14 alpha_rel_final=1.6e-14 R=1.0e-13
+  C_margin0.1            act=0.191 save(scalar) vs sysala=0.409 vs naive=0.545 wall=+0.06 it=102 | err u=6.7e-14 sig_rms=5.7e-14 alpha_rel_final=8.6e-15 R=9.3e-14
+  C_step_margin0.02      act=0.110 save(scalar) vs sysala=0.502 vs naive=0.617 wall=+0.03 it=103 | err u=4.7e-04 sig_rms=2.1e-03 alpha_rel_final=1.1e-04 R=5.1e-04
+  C_step_margin0.05      act=0.122 save(scalar) vs sysala=0.484 vs naive=0.603 wall=+0.06 it=104 | err u=4.7e-04 sig_rms=2.5e-03 alpha_rel_final=9.0e-05 R=6.5e-04
+  C_step_margin0.1       act=0.144 save(scalar) vs sysala=0.471 vs naive=0.593 wall=+0.07 it=103 | err u=4.9e-04 sig_rms=2.8e-03 alpha_rel_final=1.0e-04 R=8.9e-04
+  C_step_margin0.2       act=0.191 save(scalar) vs sysala=0.442 vs naive=0.571 wall=+0.07 it=102 | err u=5.7e-04 sig_rms=2.9e-03 alpha_rel_final=1.0e-04 R=9.6e-04
+[cantilever] ref naive 4.5s, sysala 4.0s
+  C_nb0                  act=0.160 save(scalar) vs sysala=0.434 vs naive=0.555 wall=+0.09 it=97 | err u=4.9e-13 sig_rms=3.2e-12 alpha_rel_final=2.2e-13 R=1.2e-11
+  C_nb1                  act=0.286 save(scalar) vs sysala=0.378 vs naive=0.511 wall=+0.09 it=97 | err u=5.0e-13 sig_rms=2.9e-12 alpha_rel_final=2.0e-13 R=1.2e-11
+  C_nb2                  act=0.366 save(scalar) vs sysala=0.328 vs naive=0.471 wall=+0.10 it=97 | err u=4.2e-13 sig_rms=1.7e-12 alpha_rel_final=1.0e-13 R=9.5e-12
+  C_margin0.02           act=0.166 save(scalar) vs sysala=0.432 vs naive=0.553 wall=+0.15 it=97 | err u=4.9e-13 sig_rms=3.2e-12 alpha_rel_final=2.2e-13 R=1.4e-11
+  C_margin0.1            act=0.189 save(scalar) vs sysala=0.425 vs naive=0.548 wall=+0.09 it=97 | err u=5.6e-13 sig_rms=3.1e-12 alpha_rel_final=2.3e-13 R=1.3e-11
+  C_step_margin0.02      act=0.159 save(scalar) vs sysala=0.463 vs naive=0.577 wall=+0.13 it=96 | err u=3.3e-04 sig_rms=2.8e-03 alpha_rel_final=1.5e-04 R=9.7e-04
+  C_step_margin0.05      act=0.163 save(scalar) vs sysala=0.450 vs naive=0.567 wall=+0.12 it=100 | err u=6.1e-05 sig_rms=1.2e-03 alpha_rel_final=3.2e-05 R=1.7e-04
+  C_step_margin0.1       act=0.171 save(scalar) vs sysala=0.457 vs naive=0.573 wall=+0.13 it=98 | err u=4.3e-04 sig_rms=4.3e-03 alpha_rel_final=1.8e-04 R=1.4e-03
+  C_step_margin0.2       act=0.191 save(scalar) vs sysala=0.438 vs naive=0.558 wall=+0.14 it=99 | err u=1.9e-04 sig_rms=2.6e-03 alpha_rel_final=8.9e-05 R=6.5e-04
+[cyclic_notched_kin] ref naive 23.2s, sysala 21.3s
+  C_nb0                  act=0.055 save(scalar) vs sysala=0.424 vs naive=0.579 wall=+0.10 it=205 | err u=8.9e-13 sig_rms=9.2e-14 alpha_rel_final=1.4e-13 R=1.3e-13
+  C_nb1                  act=0.592 save(scalar) vs sysala=0.170 vs naive=0.393 wall=+0.07 it=205 | err u=2.0e-13 sig_rms=5.5e-14 alpha_rel_final=2.0e-14 R=8.4e-14
+  C_nb2                  act=0.626 save(scalar) vs sysala=0.156 vs naive=0.383 wall=+0.07 it=205 | err u=5.4e-14 sig_rms=3.8e-14 alpha_rel_final=2.6e-15 R=6.4e-14
+  C_margin0.02           act=0.061 save(scalar) vs sysala=0.422 vs naive=0.577 wall=+0.10 it=205 | err u=8.1e-13 sig_rms=9.2e-14 alpha_rel_final=1.3e-13 R=1.3e-13
+  C_margin0.1            act=0.107 save(scalar) vs sysala=0.403 vs naive=0.563 wall=+0.08 it=205 | err u=8.0e-13 sig_rms=9.8e-14 alpha_rel_final=7.7e-14 R=1.4e-13
+  C_step_margin0.02      act=0.053 save(scalar) vs sysala=0.540 vs naive=0.664 wall=+0.10 it=211 | err u=3.3e-03 sig_rms=3.9e-03 alpha_rel_final=3.8e-03 R=1.1e-03
+  C_step_margin0.05      act=0.060 save(scalar) vs sysala=0.535 vs naive=0.660 wall=+0.11 it=209 | err u=7.6e-03 sig_rms=8.7e-03 alpha_rel_final=7.1e-03 R=3.4e-03
+  C_step_margin0.1       act=0.077 save(scalar) vs sysala=0.518 vs naive=0.647 wall=+0.08 it=216 | err u=4.7e-03 sig_rms=4.9e-03 alpha_rel_final=6.4e-03 R=9.6e-04
+  C_step_margin0.2       act=0.119 save(scalar) vs sysala=0.487 vs naive=0.625 wall=+0.10 it=214 | err u=6.8e-03 sig_rms=8.5e-03 alpha_rel_final=7.7e-03 R=3.0e-03
+[cyclic_cantilever_kin] ref naive 9.6s, sysala 8.2s
+  C_nb0                  act=0.137 save(scalar) vs sysala=0.353 vs naive=0.495 wall=-0.00 it=212 | err u=4.2e-12 sig_rms=3.3e-12 alpha_rel_final=4.0e-12 R=1.1e-11
+  C_nb1                  act=0.496 save(scalar) vs sysala=0.209 vs naive=0.383 wall=+0.00 it=212 | err u=3.8e-12 sig_rms=3.5e-12 alpha_rel_final=2.6e-12 R=1.5e-11
+  C_nb2                  act=0.524 save(scalar) vs sysala=0.195 vs naive=0.372 wall=+0.00 it=212 | err u=3.0e-12 sig_rms=2.5e-12 alpha_rel_final=1.6e-12 R=9.9e-12
+  C_margin0.02           act=0.141 save(scalar) vs sysala=0.352 vs naive=0.494 wall=+0.07 it=212 | err u=3.7e-12 sig_rms=3.0e-12 alpha_rel_final=3.2e-12 R=1.1e-11
+  C_margin0.1            act=0.159 save(scalar) vs sysala=0.346 vs naive=0.490 wall=+0.07 it=212 | err u=4.3e-12 sig_rms=3.2e-12 alpha_rel_final=3.9e-12 R=1.1e-11
+  C_step_margin0.02      act=0.133 save(scalar) vs sysala=0.402 vs naive=0.533 wall=+0.11 it=217 | err u=5.7e-03 sig_rms=1.2e-02 alpha_rel_final=3.0e-04 R=5.7e-03
+  C_step_margin0.05      act=0.136 save(scalar) vs sysala=0.402 vs naive=0.534 wall=+0.12 it=217 | err u=2.2e-03 sig_rms=5.9e-03 alpha_rel_final=7.5e-04 R=2.2e-03
+  C_step_margin0.1       act=0.143 save(scalar) vs sysala=0.393 vs naive=0.527 wall=+0.07 it=218 | err u=4.0e-04 sig_rms=2.9e-03 alpha_rel_final=7.9e-05 R=6.3e-04
+  C_step_margin0.2       act=0.161 save(scalar) vs sysala=0.389 vs naive=0.523 wall=+0.04 it=225 | err u=6.2e-03 sig_rms=1.4e-02 alpha_rel_final=3.2e-04 R=6.5e-03
+[cyclic_notched_kin] ref naive 24.3s, sysala 20.8s
+  E_base                 act=0.055 save(scalar) vs sysala=0.446 vs naive=0.591 wall=+0.06 it=205 | err u=8.9e-13 sig_rms=9.2e-14 alpha_rel_final=1.4e-13 R=1.3e-13
+  E_global_reversal      act=0.066 save(scalar) vs sysala=0.443 vs naive=0.588 wall=+0.11 it=205 | err u=5.7e-13 sig_rms=1.5e-13 alpha_rel_final=2.0e-13 R=2.3e-13
+  E_step                 act=0.049 save(scalar) vs sysala=0.573 vs naive=0.684 wall=+0.09 it=217 | err u=1.3e-02 sig_rms=9.9e-03 alpha_rel_final=7.4e-03 R=4.1e-03
+  E_step_global          act=0.060 save(scalar) vs sysala=0.564 vs naive=0.678 wall=+0.09 it=217 | err u=1.3e-02 sig_rms=9.9e-03 alpha_rel_final=7.4e-03 R=4.1e-03
+  E_drift_1e-3           act=0.031 save(scalar) vs sysala=0.352 vs naive=0.521 wall=-0.11 it=275 | err u=3.5e-01 sig_rms=1.4e-01 alpha_rel_final=2.6e-01 R=1.0e-01
+  E_drift_1e-3_noun      act=0.021 save(scalar) vs sysala=0.593 vs naive=0.700 wall=+0.43 it=82 | err u=6.0e+00 sig_rms=1.6e+00 alpha_rel_final=6.9e-01 R=1.5e+00
+  E_drift_1e-3_global    act=0.045 save(scalar) vs sysala=0.395 vs naive=0.553 wall=+0.06 it=221 | err u=1.7e-01 sig_rms=7.9e-02 alpha_rel_final=8.3e-02 R=3.1e-02
+[cyclic_cantilever_kin] ref naive 9.7s, sysala 8.2s
+  E_base                 act=0.137 save(scalar) vs sysala=0.357 vs naive=0.491 wall=+0.06 it=212 | err u=4.2e-12 sig_rms=3.3e-12 alpha_rel_final=4.0e-12 R=1.1e-11
+  E_global_reversal      act=0.152 save(scalar) vs sysala=0.352 vs naive=0.488 wall=+0.10 it=212 | err u=6.8e-12 sig_rms=5.1e-12 alpha_rel_final=6.5e-12 R=2.0e-11
+  E_step                 act=0.130 save(scalar) vs sysala=0.404 vs naive=0.529 wall=+0.13 it=223 | err u=6.6e-03 sig_rms=1.4e-02 alpha_rel_final=7.5e-04 R=7.0e-03
+  E_step_global          act=0.144 save(scalar) vs sysala=0.397 vs naive=0.523 wall=+0.10 it=223 | err u=6.6e-03 sig_rms=1.4e-02 alpha_rel_final=7.5e-04 R=7.0e-03
+  E_drift_1e-3           act=0.052 save(scalar) vs sysala=0.143 vs naive=0.323 wall=-0.21 it=336 | err u=1.1e-01 sig_rms=1.1e-01 alpha_rel_final=1.6e-01 R=9.7e-02
+  E_drift_1e-3_noun      FAILED: Newton did not converge at step 104 (lam=1.0000); residuals=[np.float64(0.6490836531008229), np.float64(0.7575829535931498), np.float64(0.7681236307353028), np.float64(0.8026195921865742), np.float64(
+  E_drift_1e-3_global    act=0.069 save(scalar) vs sysala=0.139 vs naive=0.319 wall=-0.16 it=311 | err u=7.7e-02 sig_rms=9.4e-02 alpha_rel_final=7.3e-02 R=4.6e-02
+[cyclic_notched] ref naive 23.1s, sysala 21.0s
+  E_base                 act=0.053 save(scalar) vs sysala=0.431 vs naive=0.584 wall=+0.05 it=202 | err u=7.9e-13 sig_rms=9.1e-14 alpha_rel_final=1.6e-13 R=1.3e-13
+  E_global_reversal      act=0.064 save(scalar) vs sysala=0.428 vs naive=0.582 wall=+0.09 it=202 | err u=5.0e-13 sig_rms=1.4e-13 alpha_rel_final=2.1e-13 R=2.2e-13
+  E_step                 act=0.047 save(scalar) vs sysala=0.568 vs naive=0.684 wall=+0.07 it=208 | err u=1.0e-02 sig_rms=1.0e-02 alpha_rel_final=7.1e-03 R=4.2e-03
+  E_step_global          act=0.058 save(scalar) vs sysala=0.558 vs naive=0.677 wall=+0.07 it=208 | err u=1.0e-02 sig_rms=1.0e-02 alpha_rel_final=7.1e-03 R=4.2e-03
+  E_drift_1e-3           act=0.031 save(scalar) vs sysala=0.329 vs naive=0.509 wall=-0.09 it=275 | err u=2.6e-01 sig_rms=1.1e-01 alpha_rel_final=2.4e-01 R=7.6e-02
+  E_drift_1e-3_noun      FAILED: Newton did not converge at step 125 (lam=1.0000); residuals=[np.float64(0.44533132396348124), np.float64(0.5584863554156537), np.float64(0.34181545661080565), np.float64(0.4041266696871804), np.float6
+  E_drift_1e-3_global    act=0.044 save(scalar) vs sysala=0.398 vs naive=0.560 wall=+0.08 it=214 | err u=1.5e-01 sig_rms=6.9e-02 alpha_rel_final=1.4e-01 R=2.5e-02
+[cyclic_cantilever] ref naive 9.5s, sysala 8.1s
+  E_base                 act=0.139 save(scalar) vs sysala=0.348 vs naive=0.484 wall=-0.01 it=205 | err u=5.0e-12 sig_rms=3.1e-12 alpha_rel_final=3.2e-12 R=1.1e-11
+  E_global_reversal      act=0.153 save(scalar) vs sysala=0.344 vs naive=0.481 wall=+0.11 it=205 | err u=9.7e-12 sig_rms=5.1e-12 alpha_rel_final=5.1e-12 R=2.0e-11
+  E_step                 act=0.131 save(scalar) vs sysala=0.393 vs naive=0.520 wall=+0.11 it=215 | err u=5.7e-03 sig_rms=1.4e-02 alpha_rel_final=9.2e-04 R=7.0e-03
+  E_step_global          act=0.146 save(scalar) vs sysala=0.389 vs naive=0.517 wall=+0.09 it=215 | err u=5.7e-03 sig_rms=1.4e-02 alpha_rel_final=9.2e-04 R=7.0e-03
+  E_drift_1e-3           act=0.053 save(scalar) vs sysala=0.155 vs naive=0.331 wall=-0.33 it=345 | err u=3.7e-01 sig_rms=1.2e-01 alpha_rel_final=1.5e-01 R=8.0e-02
+  E_drift_1e-3_noun      FAILED: Newton did not converge at step 104 (lam=1.0000); residuals=[np.float64(0.7297755024605596), np.float64(0.8148702998370916), np.float64(0.8893579306427556), np.float64(0.8409899695710019), np.float64(
+  E_drift_1e-3_global    act=0.070 save(scalar) vs sysala=0.116 vs naive=0.300 wall=-0.23 it=322 | err u=1.6e-01 sig_rms=1.1e-01 alpha_rel_final=6.3e-02 R=4.1e-02

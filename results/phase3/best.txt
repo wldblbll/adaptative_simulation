@@ -1,0 +1,23 @@
+notched_R4_H20_L40         kappa    exact best {"monitor_skip_kappa": 1.0}              save=0.518±0.003
+notched_R4_H20_L40         kappa    err<1e-3 best {"monitor_skip_kappa": 1.0}              save=0.518±0.003 u=9.1e-14
+notched_R4_H20_L40         learned  err<1e-3 best {"horizon_safety": 0.5, "name": "gbm_q02"} save=0.483±0.002 u=3.6e-04
+notched_R4_H20_L40         oracle   exact best {"horizon_safety": 1.0}                  save=0.560±0.002
+notched_R4_H20_L40         oracle   err<1e-3 best {"horizon_safety": 1.0}                  save=0.560±0.002 u=1.9e-13
+notched_R3.5_H22_L40       kappa    exact best {"monitor_skip_kappa": 1.0}              save=0.525±0.001
+notched_R3.5_H22_L40       kappa    err<1e-3 best {"monitor_skip_kappa": 1.0}              save=0.525±0.001 u=6.7e-14
+notched_R3.5_H22_L40       learned  err<1e-3 best {"horizon_safety": 0.5, "name": "gbm_q02"} save=0.490±0.001 u=2.4e-04
+notched_R3.5_H22_L40       oracle   exact best {"horizon_safety": 1.0}                  save=0.575±0.002
+notched_R3.5_H22_L40       oracle   err<1e-3 best {"horizon_safety": 1.0}                  save=0.575±0.002 u=9.4e-12
+cantilever                 kappa    exact best {"monitor_skip_kappa": 1.0}              save=0.490±0.002
+cantilever                 kappa    err<1e-3 best {"monitor_skip_kappa": 1.0}              save=0.490±0.002 u=4.9e-13
+cantilever                 learned  err<1e-3 best {"horizon_safety": 0.5, "name": "gbm_q02"} save=0.432±0.003 u=7.4e-04
+cantilever                 oracle   exact best {"horizon_safety": 1.0}                  save=0.520±0.002
+cantilever                 oracle   err<1e-3 best {"horizon_safety": 1.0}                  save=0.520±0.002 u=1.6e-11
+cyclic_notched_kin         kappa    exact best {"monitor_skip_kappa": 1.0}              save=0.573±0.006
+cyclic_notched_kin         kappa    err<1e-3 best {"monitor_skip_kappa": 1.0}              save=0.573±0.006 u=8.9e-13
+cyclic_notched_kin         oracle   exact best {"horizon_safety": 1.0}                  save=0.693±0.003
+cyclic_notched_kin         oracle   err<1e-3 best {"horizon_safety": 1.0}                  save=0.693±0.003 u=1.0e-10
+cyclic_cantilever_kin      kappa    exact best {"monitor_skip_kappa": 1.0}              save=0.457±0.003
+cyclic_cantilever_kin      kappa    err<1e-3 best {"monitor_skip_kappa": 1.0}              save=0.457±0.003 u=4.2e-12
+cyclic_cantilever_kin      oracle   exact best {"horizon_safety": 1.0}                  save=0.530±0.003
+cyclic_cantilever_kin      oracle   err<1e-3 best {"horizon_safety": 1.0}                  save=0.530±0.003 u=2.3e-11

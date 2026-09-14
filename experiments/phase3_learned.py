@@ -49,6 +49,8 @@ def main():
     ap.add_argument("--h", type=float, default=0.5)
     ap.add_argument("--out", default="results/phase3/results.jsonl")
     ap.add_argument("--seeds", type=int, default=3)
+    ap.add_argument("--models", default="gbm,linear")
+    ap.add_argument("--safeties", default="0.75,0.5,0.25")
     args = ap.parse_args()
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     h = args.h
@@ -65,10 +67,11 @@ def main():
     X = np.vstack(Xs); y = np.concatenate(ys)
     print(f"training set {X.shape} ({time.perf_counter() - t0:.0f}s)")
     models = {}
-    for seed in range(args.seeds):
-        t0 = time.perf_counter(); models[("gbm", seed)] = HorizonModel("gbm", seed).fit(X, y)
-        print(f"gbm seed {seed} fit {time.perf_counter() - t0:.1f}s")
-    models[("linear", 0)] = HorizonModel("linear").fit(X, y)
+    for kind in args.models.split(","):
+        for seed in range(1 if kind == "linear" else args.seeds):
+            t0 = time.perf_counter(); models[(kind, seed)] = HorizonModel(kind, seed).fit(X, y)
+            print(f"{kind} seed {seed} fit {time.perf_counter() - t0:.1f}s")
+    safeties = [float(x) for x in args.safeties.split(",")]
     # feature importance proxy: permutation on a held-out family member (reported later)
     with open(args.out, "a") as f:
         for group, cs in (("family_unseen", test_family), ("other", other)):
@@ -88,7 +91,7 @@ def main():
                 orc = OracleHorizon(H, c.elems, c.material)
                 runs += [("oracle", orc, dict(horizon_safety=s), None) for s in (1.0, 0.5)]
                 for (kind, seed), mod in models.items():
-                    for s in (0.75, 0.5, 0.25):
+                    for s in safeties:
                         runs.append(("learned", mod, dict(horizon_safety=s, name=kind), seed))
                 for policy, hm, extra, seed in runs:
                     row = evaluate(c, ref, H, unit, policy, hm, extra, seed)
