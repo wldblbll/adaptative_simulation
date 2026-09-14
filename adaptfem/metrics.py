@@ -30,10 +30,13 @@ def errors(hist, ref, model, sig_y0):
     return out
 
 
-def element_cost(cost, unit):
-    """Aggregate the run's counters with a unit-cost dict (from benchmark.measure_costs)."""
+def element_cost(cost, unit, decision_time=0.0):
+    """Aggregate the run's counters with a unit-cost dict (from benchmark.measure_costs).
+    decision_time: measured wall time of the policy inference (added as is: it is a real
+    cost of the same implementation; a compiled inference would be cheaper, so would the
+    rest)."""
     c = cost.c
-    return (c["gp_integrations"] * (unit["strain_gp"] + unit["trial_gp"])
+    return (decision_time + c["gp_integrations"] * (unit["strain_gp"] + unit["trial_gp"])
             + c["gp_plastic"] * unit["return_gp"]
             + c["element_K"] * (unit["K_el"] + unit["asmK_el"])
             + c["element_fint"] * (unit["fint_el"] + unit["asmf_el"])

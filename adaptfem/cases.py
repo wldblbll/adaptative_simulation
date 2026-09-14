@@ -115,6 +115,21 @@ def cyclic_cantilever_kin(h=0.5, **kw):
     return c
 
 
+def notched_family(R=4.0, H=20.0, L=40.0, h=0.5, u_max=None, **kw):
+    """Parametrised family: notch radius R, plate height H (same nominal strain at u_max)."""
+    u = 0.06 * L / 40.0 if u_max is None else u_max
+    c = notched_plate(h=h, L=L, H=H, R=R, u_max=u, **kw)
+    c.name = f"notched_R{R:g}_H{H:g}_L{L:g}"
+    return c
+
+
+def cantilever_family(H=10.0, L=50.0, h=0.5, v_max=None, **kw):
+    v = 1.0 * (L / 50.0) ** 2 / (H / 10.0) if v_max is None else v_max
+    c = cantilever(h=h, L=L, H=H, v_max=v, **kw)
+    c.name = f"cantilever_H{H:g}_L{L:g}"
+    return c
+
+
 CASES = {"notched_plate": notched_plate, "notched_overload": notched_plate_overload,
          "cantilever": cantilever, "cyclic_notched_kin": cyclic_notched_kin,
          "cyclic_cantilever_kin": cyclic_cantilever_kin,

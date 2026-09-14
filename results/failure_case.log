@@ -1,0 +1,2 @@
+exact (iteration monitoring, plastic active): u_max=8.9e-13 sig_rms_max=9.2e-14 alpha_rel_final=1.4e-13 R_max=1.3e-13
+lagged (post-step monitoring): u_max=1.3e-02 sig_rms_max=9.9e-03 alpha_rel_final=7.4e-03 R_max=4.1e-03

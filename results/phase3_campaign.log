@@ -1,0 +1,14 @@
+train case notched_R3_H20_L40: 165896 samples, 0.102 near-yield
+train case notched_R5_H20_L40: 159546 samples, 0.102 near-yield
+train case notched_R4_H16_L40: 128406 samples, 0.106 near-yield
+train case notched_R4_H24_L40: 197914 samples, 0.097 near-yield
+train case notched_R2.5_H18_L40: 149586 samples, 0.107 near-yield
+training set (801348, 12) (51s)
+gbm seed 0 fit 8.9s
+gbm seed 1 fit 7.2s
+gbm seed 2 fit 6.9s
+[family_unseen] notched_R4_H20_L40: prediction MAE/unsafe on near-yield samples: {'gbm_0': {'mae': 1.5069781030291574, 'unsafe': 0.6546931407942238}, 'gbm_1': {'mae': 1.5049730941409734, 'unsafe': 0.6578820697954272}, 'gbm_2': {'mae': 1.491791347582286, 'unsafe': 0.6548736462093863}, 'linear_0': {'mae': 3.5585063592537396, 'unsafe': 0.8031287605294826}, 'heuristic': {'mae': 6.2429704925635265, 'unsafe': 0.0}}
+   kappa    {'monitor_skip_kappa': 0.0}                   seed=None save=0.070 (no-decision 0.070) mon/step=29219 it=102/102 | u=9.1e-14 a=2.9e-14
+   kappa    {'monitor_skip_kappa': 1.0}                   seed=None save=0.521 (no-decision 0.521) mon/step=4101 it=102/102 | u=9.1e-14 a=2.9e-14
+   kappa    {'monitor_skip_kappa': 1.5}                   seed=None save=0.483 (no-decision 0.483) mon/step=6232 it=102/102 | u=9.1e-14 a=2.9e-14
+   kappa    {'monitor_skip_kappa': 2.0}                   seed=None save=0.443 (no-decision 0.443) mon/step=8447 it=102/102 | u=9.1e-14 a=2.9e-14
