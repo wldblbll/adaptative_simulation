@@ -1,0 +1,9 @@
+[project]
+name = "adaptfem"
+version = "0.1.0"
+description = "Adaptive allocation of computational effort in incremental nonlinear FEM (research code)"
+requires-python = ">=3.10"
+dependencies = ["numpy", "scipy", "matplotlib", "scikit-learn"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

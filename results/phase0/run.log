@@ -1,0 +1,20 @@
+[notched_plate] nel=3096 steps=60 wall=10.8s elem-level share=0.27 plastic frac max=0.36 (analysis 19s)
+   tol=0.002: raw=0.976 after-yield=0.966 cost(vec)=0.767 cost(scalar)=0.547 rho0.25=0.723 lazy_alpha_p99=1.35e-08
+   tol=0.01: raw=0.986 after-yield=0.980 cost(vec)=0.780 cost(scalar)=0.572 rho0.25=0.750 lazy_alpha_p99=1.16e-07
+   tol=0.05: raw=0.993 after-yield=0.990 cost(vec)=0.790 cost(scalar)=0.590 rho0.25=0.770 lazy_alpha_p99=6.48e-07
+[notched_overload] nel=3096 steps=60 wall=12.8s elem-level share=0.28 plastic frac max=0.53 (analysis 21s)
+   tol=0.002: raw=0.936 after-yield=0.924 cost(vec)=0.750 cost(scalar)=0.589 rho0.25=0.717 lazy_alpha_p99=1.98e-08
+   tol=0.01: raw=0.964 after-yield=0.957 cost(vec)=0.779 cost(scalar)=0.636 rho0.25=0.768 lazy_alpha_p99=1.68e-07
+   tol=0.05: raw=0.982 after-yield=0.979 cost(vec)=0.799 cost(scalar)=0.667 rho0.25=0.802 lazy_alpha_p99=1.27e-06
+[cantilever] nel=2000 steps=50 wall=4.3s elem-level share=0.42 plastic frac max=0.23 (analysis 9s)
+   tol=0.002: raw=0.969 after-yield=0.962 cost(vec)=0.773 cost(scalar)=0.554 rho0.25=0.729 lazy_alpha_p99=1.62e-08
+   tol=0.01: raw=0.981 after-yield=0.977 cost(vec)=0.786 cost(scalar)=0.580 rho0.25=0.757 lazy_alpha_p99=1.36e-07
+   tol=0.05: raw=0.990 after-yield=0.987 cost(vec)=0.796 cost(scalar)=0.597 rho0.25=0.776 lazy_alpha_p99=8.66e-07
+[cyclic_notched] nel=3096 steps=126 wall=21.7s elem-level share=0.27 plastic frac max=0.36 (analysis 37s)
+   tol=0.002: raw=0.978 after-yield=0.976 cost(vec)=0.775 cost(scalar)=0.511 rho0.25=0.703 lazy_alpha_p99=0.00e+00
+   tol=0.01: raw=0.983 after-yield=0.982 cost(vec)=0.785 cost(scalar)=0.530 rho0.25=0.724 lazy_alpha_p99=1.36e-06
+   tol=0.05: raw=0.989 after-yield=0.988 cost(vec)=0.795 cost(scalar)=0.548 rho0.25=0.744 lazy_alpha_p99=4.38e-05
+[cyclic_cantilever] nel=2000 steps=105 wall=9.6s elem-level share=0.42 plastic frac max=0.28 (analysis 19s)
+   tol=0.002: raw=0.948 after-yield=0.946 cost(vec)=0.744 cost(scalar)=0.517 rho0.25=0.685 lazy_alpha_p99=1.30e-08
+   tol=0.01: raw=0.964 after-yield=0.963 cost(vec)=0.763 cost(scalar)=0.553 rho0.25=0.724 lazy_alpha_p99=1.52e-07
+   tol=0.05: raw=0.977 after-yield=0.976 cost(vec)=0.778 cost(scalar)=0.580 rho0.25=0.754 lazy_alpha_p99=1.95e-06

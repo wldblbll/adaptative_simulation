@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+results/**/*.npz
+results/**/*.pkl
+*.egg-info/
