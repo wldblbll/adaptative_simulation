@@ -1,73 +1,69 @@
 # Verdict
 
-Une page, sans détour. Chiffres issus de `results/` (scripts `experiments/`).
+One page, no detours. Numbers from `results/` (details in `docs/experiments.md`).
 
-## Est-ce une bonne idée ?
+## Is it a good idea?
 
-**Oui, sous une forme plus étroite que celle du cahier des charges.** Concentrer
-l'intégration de la loi et l'assemblage sur la zone plastique, en remplaçant les autres
-éléments par leur linéarisation exacte f^e_0 + K^e_0 Δu et en les contrôlant par le
-prédicteur élastique, fonctionne **sans aucune dégradation** de la solution (1e-12) et
-sans itération de Newton supplémentaire. L'idée telle qu'écrite — extrapoler aussi les
-zones « calmes mais plastiques » — ne fonctionne pas en ligne : l'oracle la créditait,
-l'équilibre et l'inversion de charge la détruisent.
+**Yes, in a narrower form than originally planned.** Concentrating law integration and
+assembly on the plastic zone — replacing every other element by its exact linearisation
+f^e_0 + K^e_0 Δu and guarding it with the elastic predictor — works **with no
+degradation at all** of the solution (1e-12) and no extra Newton iteration. The idea as
+first written — also extrapolating "calm but plastic" regions — does not work online: the
+oracle credited it, equilibrium feedback and load reversal destroy it.
 
-## Quel gain, sur quels problèmes, à quelle erreur ?
+## How much, on which problems, at what error?
 
-- **46 à 57 % du coût élémentaire** (modèle de coût scalaire ; 47 à 61 % en vectorisé)
-  par rapport à une référence qui réutilise déjà la tangente élastique, à erreur
-  ≤ 1e-12, sur plaque entaillée, console, et leurs versions cycliques à écrouissage
-  cinématique. +2 à +7 points de plus pour une erreur de 1e-5 à 1e-3 (contrôle au
-  prédicteur seul ou après le pas).
-- Sur le **temps total** de ce prototype 2D Python : +1 à +16 %, parce que la part
-  élémentaire du temps n'y est que de 27 à 43 % (factorisation dominante). Le gain mur
-  est le produit du gain élémentaire par cette part : il est réel pour les lois de
-  comportement coûteuses (le ratio plastique/élastique de J2 n'est que de 3) et faible
-  pour les grands modèles dominés par le solveur linéaire.
-- Borne haute oracle (Phase 0) : 85–90 % du coût élémentaire ; borne d'une politique
-  exacte idéale (contrôle gratuit) : 56–74 %. L'écart entre les deux (13–34 points) est
-  la part plastique, non transférable ; l'écart entre l'idéal et l'obtenu (7–17 points)
-  est le coût du contrôle.
+- **46 to 57 % of the element-level cost** (scalar cost model; 47 to 61 % vectorised)
+  against a reference that already reuses the elastic tangent, at error ≤ 1e-12, on a
+  notched plate, a cantilever, and their cyclic versions with kinematic hardening. +2 to
+  +7 more points for an error of 1e-5 to 1e-3 (check at the predictor only, or after the
+  step).
+- On **total time** in this 2D Python prototype: 1 to 16 % faster, because the element
+  share of the time is only 27 to 43 % (factorisation dominates). The wall-clock gain is
+  the element gain times that share: real for expensive constitutive laws (the J2
+  plastic/elastic ratio is only 3), small for large models dominated by the linear
+  solver.
+- Oracle upper bound (Phase 0): 85–90 % of element-level cost; bound for an ideal exact
+  policy (free checks): 56–74 %. The gap between the two (13–34 points) is the plastic
+  share, not transferable; the gap between ideal and achieved (7–17 points) is the cost
+  of checking.
 
-## Quelles limites, quels cas contre-productifs ?
+## Limits, counter-productive cases?
 
-- Plasticité diffuse : l'ensemble actif tend vers tout le domaine, le contrôle s'ajoute
-  au coût. Structures uniformément proches de la limite : tout doit être contrôlé, le
-  gain tombe à 5–7 %.
-- Tout mode non exact (intégration paresseuse des éléments plastiques) est
-  contre-productif : erreurs de 1e-3 à 6.0, itérations de Newton +10 à +60 %, et sur
-  chargement cyclique la solution est détruite (chemin non proportionnel dans
-  l'intégration différée).
-- La propagation aux voisins et les marges de précaution coûtent 10 à 27 points sans
-  rien apporter. Le Newton modifié pour économiser la factorisation diverge.
-- Périmètre : 2D, J2, chargements proportionnels, prototype Python ; rapports de coûts
-  mesurés sous deux modèles, transférables à ±2 points près ; textes intégraux des
-  relatifs proches non lus.
+- Diffuse plasticity: the active set tends to the whole domain, checking adds to the
+  cost. Structures uniformly close to yield: everything must be checked, the gain drops
+  to 5–7 %.
+- Every non-exact mode (lazy integration of plastic elements) is counter-productive:
+  errors of 1e-3 to 6.0, +10 to +60 % Newton iterations, and under cyclic loading the
+  solution is destroyed (non-proportional path inside the deferred integration).
+- Neighbour propagation and precautionary margins cost 10 to 27 points and bring nothing.
+  Modified Newton to save factorisations diverges.
+- Scope: 2D, J2, small strains, proportional loading, Python prototype; cost ratios
+  measured under two models (absolute savings shift by several points from one machine
+  to another, the ranking does not); full texts of the closest related work not read.
 
-## L'IA apporte-t-elle quelque chose, où, combien ?
+## Does AI add anything, where, how much?
 
-**Non, pas dans ce cadre.** Une politique apprise (gradient boosting, 800 k
-échantillons tirés des simulations d'une famille de pièces, sans dataset externe)
-prédit l'horizon avant plastification 2 à 4 fois mieux que l'heuristique, et mieux
-dans sa famille qu'en dehors (H3 réel au niveau prédiction). Mais aucune de ses 24
-configurations n'atteint le régime exact sur aucun des 5 cas : quand elle économise
-plus que l'heuristique réglée, c'est en manquant des plastifications (erreur 2e-3 à
-4e-1). La borne de ce qu'une anticipation parfaite pourrait apporter (H1) est de **3 à
-12 points** de coût élémentaire (oracle 52–69 % contre heuristique 46–57 %), concentrés
-sur les cas cycliques où le contrôle coûte le plus. H2 (renforcement) n'a pas été testé,
-par choix argumenté : il n'y a pas de budget d'erreur à distribuer dans le régime exact.
-La raison de fond : la décision utile est une décision de *sûreté*, et le critère
-physique (prédicteur élastique + marge/vitesse) est sûr par construction et presque
-optimal.
+**No, not in this setting.** A learned policy (gradient boosting, 800k samples drawn from
+the simulations of one family of parts, no external dataset) predicts the horizon before
+yielding 2 to 4 times better than the heuristic, and better within its family than
+outside (H3 holds at the prediction level). But none of its 24 configurations reaches the
+exact regime on any of the 5 cases: when it saves more than the tuned heuristic, it does
+so by missing yield events (error 2e-3 to 4e-1). The bound on what perfect anticipation
+could bring (H1) is **3 to 12 points** of element-level cost (oracle 52–69 % vs heuristic
+46–57 %), concentrated on the cyclic cases where checking costs the most. H2
+(reinforcement learning) was not tested, by argued choice: there is no error budget to
+distribute in the exact regime. The underlying reason: the useful decision is a *safety*
+decision, and the physical criterion (elastic predictor + margin/rate) is safe by
+construction and nearly optimal.
 
-## Que faudrait-il faire ensuite ?
+## What should come next?
 
-1. Porter la méthode sur une loi de comportement coûteuse (plasticité cristalline,
-   endommagement) et en 3D : c'est là que le gain élémentaire pèse sur le temps total.
-2. Attaquer la phase solveur : mise à jour de rang faible de la factorisation sur les
-   seuls blocs actifs, plutôt qu'un Newton modifié.
-3. Si apprentissage il y a : une politique qui ne fait que *retarder* le contrôle sous
-   la borne κ (jamais au-delà), évaluée sur les cas cycliques, seul endroit où il reste
-   3–12 points à prendre.
-4. Lire Radermacher & Reese (2014) et Kerfriden et al. (2013) en texte intégral avant
-   toute soumission, et repositionner si nécessaire.
+1. Port the method to an expensive constitutive law (crystal plasticity, damage) and to
+   3D: that is where the element-level gain weighs on total time.
+2. Attack the solver phase: low-rank update of the factorisation on the active blocks
+   only, rather than a modified Newton.
+3. If learning at all: a policy that only *delays* the check below the κ bound (never
+   beyond), evaluated on cyclic cases, the only place where 3–12 points remain.
+4. Read Radermacher & Reese (2014) and Kerfriden et al. (2013) in full before any
+   submission, and reposition if needed.

@@ -2,7 +2,7 @@
 
 Research code. Plane-strain Q4 elements, J2 plasticity with isotropic (linear + Voce)
 hardening, radial return with consistent tangent, incremental Newton-Raphson, and full
-cost instrumentation. The orchestrator (Phase 2) and the learned policies (Phase 3) are
+cost instrumentation. The exact selective-integration orchestrator (orchestrator.py) is
 layered on top of the same solver, so every comparison uses the same mesh, discretisation
 and integrator.
 """
