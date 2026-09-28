@@ -44,25 +44,3 @@ def notched_plate_mesh(L, H, R, h, notch_x=None):
 def nodes_on(nodes, axis, value, tol=1e-9):
     return np.nonzero(np.abs(nodes[:, axis] - value) < tol)[0]
 
-
-def element_adjacency(elems):
-    """List of neighbouring elements (sharing at least one node) as CSR arrays."""
-    nel = elems.shape[0]
-    nn = elems.max() + 1
-    node_to_el = [[] for _ in range(nn)]
-    for e, en in enumerate(elems):
-        for n in en:
-            node_to_el[n].append(e)
-    neigh = [set() for _ in range(nel)]
-    for lst in node_to_el:
-        for e in lst:
-            neigh[e].update(lst)
-    for e in range(nel):
-        neigh[e].discard(e)
-    indptr = np.zeros(nel + 1, dtype=int)
-    indices = []
-    for e in range(nel):
-        s = sorted(neigh[e])
-        indices.extend(s)
-        indptr[e + 1] = indptr[e] + len(s)
-    return indptr, np.array(indices, dtype=int)

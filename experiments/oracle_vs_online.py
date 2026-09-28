@@ -2,7 +2,7 @@
 the final implementation). Bounds: (a) ideal exact policy: an element is integrated iff
 it is plastic at that step, perfect knowledge, no monitoring cost; (b) Phase 0 oracle
 (tangent extrapolation, greedy, tol 1%), plastic elements included, no monitoring cost.
-Achieved: exact heuristic (kappa=1) and oracle-horizon monitoring, from Phase 2/3 rows."""
+Achieved: exact heuristic (kappa=1) and from the archived Phase 2 rows."""
 import json, os, sys
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

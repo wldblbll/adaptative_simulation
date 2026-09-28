@@ -71,3 +71,18 @@ def test_orchestrated_full_equals_reference():
     m1 = c.model(); u1, s1 = m1.run()
     m2 = c.model(); u2, s2 = m2.run(orchestrator=AllActive())
     assert np.array_equal(u1, u2) and np.array_equal(s1.alpha, s2.alpha)
+
+
+def test_exact_orchestrator_matches_reference():
+    """Default orchestrator (plastic elements active, elastic ones linearised and checked
+    by the elastic predictor every iteration, kappa = 1) reproduces the reference while
+    skipping most of the element work."""
+    from adaptfem.orchestrator import OrchestratorConfig, HeuristicOrchestrator
+    c = cases.notched_plate(h=1.0, n_steps=12, u_max=0.12)
+    ref = c.model(reuse_elastic_K=True); u_ref, s_ref = ref.run()
+    m = c.model(reuse_elastic_K=True)
+    u, s = m.run(orchestrator=HeuristicOrchestrator(OrchestratorConfig(), m))
+    assert np.linalg.norm(u - u_ref) <= 1e-9 * np.linalg.norm(u_ref)
+    assert np.allclose(s.alpha, s_ref.alpha, atol=1e-12)
+    assert m.cost.c["newton_iters"] == ref.cost.c["newton_iters"]
+    assert m.cost.c["element_extrapolated"] > 0

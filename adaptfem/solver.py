@@ -1,6 +1,6 @@
 """Incremental Newton-Raphson solver with full cost instrumentation and history recording.
 
-Design rule: the orchestrator (Phase 2) only changes *which elements are integrated* at a
+Design rule: the orchestrator only changes *which elements are integrated* at a
 given iteration. Everything else (mesh, element, material, Newton loop, convergence test)
 is shared with the reference run, which is this same solver with `orchestrator=None`.
 """
@@ -92,7 +92,7 @@ class StepRecord:
 class FEModel:
     def __init__(self, elements, material, fixed_dofs, ubar, load_history, fext=None,
                  tol=1e-8, maxit=25, record_history=False, record_tangent=True,
-                 reuse_elastic_K=False, modified_newton_below=0.0):
+                 reuse_elastic_K=False):
         """reuse_elastic_K: 'Sysala' reference mode -- elements with no plastic Gauss
         point reuse the precomputed elastic element stiffness instead of recomputing
         B^T C B (numerically identical; changes only the cost counters/timers)."""
@@ -109,7 +109,6 @@ class FEModel:
         self.record_history = record_history
         self.record_tangent = record_tangent
         self.reuse_elastic_K = reuse_elastic_K
-        self.modified_newton_below = modified_newton_below   # reuse the predictor LU while active fraction < this
         self.Ke_elastic = elements.element_K(np.broadcast_to(material.C3, (elements.nel, NGP, 3, 3)))
         self.cost = Cost()
         self.eps_cur = np.zeros((self.nel * NGP, 3))   # scratch: current strain at every GP
@@ -224,8 +223,9 @@ class FEModel:
         for it in range(self.maxit + 1):
             self.integrate_elements(u, state_prev, active, state)
             self.extrapolate_elements(u, state_prev, quiet, state)
-            if orchestrator is not None and quiet.size and (orchestrator.cfg.monitor_when == "iteration"
-                    or (orchestrator.cfg.monitor_when in ("predictor", "predictor_only") and it == 0)):
+            if orchestrator is not None and quiet.size:
+                # exact check of the quiet elements on the current iterate; woken elements
+                # are integrated now and absorbed by this Newton loop
                 with c.timer("orchestrator"):
                     wake = orchestrator.monitor(k, it, u, state_prev, state, quiet, self)
                 if wake is not None and wake.size:
@@ -242,45 +242,17 @@ class FEModel:
             rn = np.linalg.norm(Rf) / ref
             residuals.append(rn)
             if rn < self.tol:
-                # converged with the current active set: verify the quiet elements once;
-                # if any must wake, integrate them and keep iterating (still exact for
-                # elastic-anchored elements: nothing is accepted without a passed check)
-                if orchestrator is not None and quiet.size and orchestrator.cfg.monitor_when in ("converged", "predictor"):
-                    with c.timer("orchestrator"):
-                        wake = orchestrator.monitor(k, it, u, state_prev, state, quiet, self)
-                    if wake is not None and wake.size:
-                        active = np.union1d(active, wake)
-                        quiet = np.setdiff1d(quiet, wake)
-                        self.integrate_elements(u, state_prev, wake, state)
-                        c.add("elements_woken_in_iteration", wake.size)
-                        with c.timer("assembly"):
-                            fint = self.el.assemble_fint(state.fe)
-                        c.add("assemblies_f")
-                        R = fext - fint; Rf = R[self.free]
-                        rn = np.linalg.norm(Rf) / max(np.linalg.norm(fint), np.linalg.norm(fext), 1e-12)
-                        residuals.append(rn)
-                        if rn >= self.tol and it < self.maxit:
-                            pass
-                        else:
-                            converged = rn < self.tol
-                            break
-                    else:
-                        converged = True
-                        break
-                else:
-                    converged = True
-                    break
+                converged = True
+                break
             if it == self.maxit:
                 break
-            if not (self.modified_newton_below > 0 and active.size < self.modified_newton_below * self.nel):
-                with c.timer("assembly"):
-                    Kdata = self.el.assemble_K_data(state.Ke)
-                    K = self.el.csr(Kdata)
-                    Kff = K[self.free][:, self.free].tocsc()
-                c.add("assemblies_K")
-                with c.timer("factorization"):
-                    lu = splu(Kff)
-                c.add("factorizations")
+            with c.timer("assembly"):
+                K = self.el.csr(self.el.assemble_K_data(state.Ke))
+                Kff = K[self.free][:, self.free].tocsc()
+            c.add("assemblies_K")
+            with c.timer("factorization"):
+                lu = splu(Kff)
+            c.add("factorizations")
             with c.timer("solve"):
                 du = lu.solve(Rf)
             c.add("solves")
@@ -323,8 +295,9 @@ class FEModel:
         return u, state, rec
 
     def run(self, orchestrator=None, verbose=False):
-        """Run the full load history. `orchestrator` (Phase 2) has
-        `select(k, u_prev, state_prev, model) -> active element index array or None`
+        """Run the full load history. `orchestrator` (see orchestrator.py) has
+        `select(k, u_prev, state_prev, model) -> active element index array or None`,
+        `monitor(k, it, u, state_prev, state, quiet, model) -> elements to wake or None`
         and `after_step(k, u, state, rec, model)`."""
         c = self.cost
         with c.timer("total"):

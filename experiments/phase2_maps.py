@@ -14,18 +14,16 @@ out = "results/phase2"; os.makedirs(out, exist_ok=True)
 
 
 class Recorder(HeuristicOrchestrator):
-    def __init__(self, *a, **k):
-        super().__init__(*a, **k)
-        self.mon_steps = []
+    """Also records which elements were checked (monitored) at every step."""
     def select(self, k, u_prev, state_prev, model):
         self._mon = np.zeros(self.nel, bool)
         return super().select(k, u_prev, state_prev, model)
-    def _evaluate(self, model, state_prev, quiet, u, in_iteration=True):
-        age0 = self.margin_age.copy()
-        w = super()._evaluate(model, state_prev, quiet, u, in_iteration)
-        self._mon |= (self.margin_age == 0) & (age0 != 0) | ((self.margin_age == 0) & (self.margin != np.inf) & self._mon)
+
+    def monitor(self, k, it, u, state_prev, state, quiet, model):
+        wake = super().monitor(k, it, u, state_prev, state, quiet, model)
         self._mon[quiet[self.margin_age[quiet] == 0]] = True
-        return w
+        return wake
+
     def after_step(self, k, u, state, rec, model):
         self.mon_steps.append(self._mon.copy())
         super().after_step(k, u, state, rec, model)
@@ -35,6 +33,7 @@ for name in ("notched_plate", "cantilever", "cyclic_notched_kin", "cyclic_cantil
     c = cases.CASES[name](h=0.5)
     m = c.model(record_history=True, reuse_elastic_K=True)
     o = Recorder(OrchestratorConfig(monitor_skip_kappa=1.0), m)
+    o.mon_steps = []
     m.run(orchestrator=o)
     h = m.stacked_history()
     act = h["active"]; mon = np.array(o.mon_steps); pl = h["gp_plastic"] > 0

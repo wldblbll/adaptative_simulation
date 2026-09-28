@@ -1,10 +1,14 @@
-"""Phase 2 campaign runner: heuristic orchestrator configurations x cases.
+"""Exact orchestrator vs reference: sweep of the monitoring safety factor kappa.
 
 Each row of the output JSONL is fully reproducible: it stores the case, the orchestrator
 config, the counters, the timers, the unit-cost models and the error metrics against the
 reference run (same mesh, steps, integrator; orchestrator off).
+
+The historical campaigns of the exploration (lazy plastic integration, catch-up,
+neighbour propagation, post-step monitoring, reversal wake-up) are archived at the git
+tag `exploration-complete`; their rows are kept in results/phase2/results.jsonl.
 """
-import argparse, json, os, sys, time, itertools, hashlib
+import argparse, json, os, sys, time
 import numpy as np
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from adaptfem import cases
@@ -62,58 +66,23 @@ def run_config(name, h, cfg: OrchestratorConfig, ref=None):
     return row
 
 
-def grid(**kw):
-    keys = list(kw)
-    for vals in itertools.product(*kw.values()):
-        yield dict(zip(keys, vals))
-
-
-CAMPAIGNS = {
-    "smoke": lambda: [dict(name="default")],
-    # A/E: monitoring strategy for elastic-anchored elements (where, how often, how safe)
-    "A_monitor": lambda: [dict(name=f"mon_{w}_k{k}", monitor_when=w, monitor_skip_kappa=k)
-                          for w in ("iteration", "predictor", "predictor_only", "converged", "step")
-                          for k in (0.0, 0.5, 1.0, 2.0, 5.0)],
-    # B: plastic-anchored elements: keep active vs lazy integration with drift tolerance
-    "B_plastic": lambda: [dict(name="pl_always", plastic_policy="always_active")]
-                       + [dict(name=f"pl_drift_{t}", plastic_policy="drift", tol_alpha=t) for t in (3e-5, 1e-4, 3e-4, 1e-3, 3e-3)]
-                       + [dict(name=f"pl_drift_{t}_nopred", plastic_policy="drift", tol_alpha=t, plastic_predict=False) for t in (1e-4, 1e-3)]
-                       + [dict(name=f"pl_drift_{t}_nounload", plastic_policy="drift", tol_alpha=t, unload_wake=False) for t in (1e-4, 1e-3)],
-    # D: catch-up policies (only matter with lazy plastic integration or lagged monitoring)
-    "D_catchup": lambda: [dict(name=f"D_step_catch{n}", monitor_when="step", catchup_every=n) for n in (0, 5, 10, 20)]
-                       + [dict(name=f"D_drift_catch{n}", plastic_policy="drift", tol_alpha=1e-3, catchup_every=n) for n in (0, 5, 10, 20)]
-                       + [dict(name=f"D_drift_skip{n}", plastic_policy="drift", tol_alpha=1e-3, max_skip=n) for n in (3, 10)],
-    # C: spatial granularity / neighbour propagation, precautionary margin
-    "C_spatial": lambda: [dict(name=f"C_nb{l}", neighbor_layers=l) for l in (0, 1, 2)]
-                       + [dict(name=f"C_margin{m}", yield_margin=m) for m in (0.02, 0.1)]
-                       + [dict(name=f"C_step_margin{m}", monitor_when="step", yield_margin=m) for m in (0.02, 0.05, 0.1, 0.2)],
-    # E: wake-up on reversal (cyclic cases)
-    "E_reversal": lambda: [dict(name="E_base"),
-                           dict(name="E_global_reversal", global_reversal_wake=True),
-                           dict(name="E_step", monitor_when="step"),
-                           dict(name="E_step_global", monitor_when="step", global_reversal_wake=True),
-                           dict(name="E_drift_1e-3", plastic_policy="drift", tol_alpha=1e-3),
-                           dict(name="E_drift_1e-3_noun", plastic_policy="drift", tol_alpha=1e-3, unload_wake=False),
-                           dict(name="E_drift_1e-3_global", plastic_policy="drift", tol_alpha=1e-3, global_reversal_wake=True)],
-}
+KAPPAS = (0.0, 0.5, 1.0, 2.0)
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--campaign", default="smoke")
     ap.add_argument("--cases", default="notched_plate,cantilever,cyclic_notched_kin,cyclic_cantilever_kin")
     ap.add_argument("--h", type=float, default=0.5)
-    ap.add_argument("--out", default="results/phase2/results.jsonl")
+    ap.add_argument("--out", default="results/phase2/kappa_sweep.jsonl")
     args = ap.parse_args()
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
-    cfgs = [OrchestratorConfig(**d) for d in CAMPAIGNS[args.campaign]()]
+    cfgs = [OrchestratorConfig(name=f"exact_k{k}", monitor_skip_kappa=k) for k in KAPPAS]
     with open(args.out, "a") as f:
         for name in args.cases.split(","):
             ref = reference(name, args.h)
             print(f"[{name}] ref naive {ref['naive']['wall']:.1f}s, sysala {ref['sysala']['wall']:.1f}s")
             for cfg in cfgs:
                 row = run_config(name, args.h, cfg, ref)
-                row["campaign"] = args.campaign
                 f.write(json.dumps(row) + "\n"); f.flush()
                 if row["ok"]:
                     e = row["errors"]
