@@ -21,6 +21,35 @@ physical criterion?
 
 ![Element-level savings: achieved vs ceilings](docs/figures/headline_savings.png)
 
+## What was simulated
+
+Two classic 2D test parts, both **meshed once and never re-meshed** (the mesh is an input
+of the method), in plane strain, made of a generic structural steel (E = 200 GPa,
+ν = 0.3, yield stress 250 MPa, J2 plasticity with isotropic hardening, plus kinematic
+hardening for the cyclic runs so that reverse yielding appears — the Bauschinger effect).
+
+![Test parts, meshes, boundary conditions and load histories](docs/figures/test_cases.png)
+
+- **Notched plate in tension** — a 40 × 20 mm plate with a semicircular edge notch
+  (R = 4 mm), the textbook stress concentrator. Left edge clamped, right edge pulled by
+  an imposed displacement of up to 0.06 mm (a nominal strain of 0.15 %, of the order of
+  the yield strain). Plasticity starts at the notch root and spreads in two bands
+  toward the clamped corners; most of the plate stays elastic.
+  3096 quadrilateral elements, 6450 degrees of freedom.
+- **Cantilever in bending** — a 50 × 10 mm beam clamped on the left, tip pushed up by
+  an imposed deflection of up to 1 mm. Plasticity appears in the outer fibres near the
+  clamp. 2000 elements, 4242 degrees of freedom.
+- **Loading**: displacement-controlled, either a monotonic ramp (50–60 steps) or a cycle
+  *load → unload and reverse to −60 % → reload* (105–126 steps). The cycle is the hard
+  case: the plastic zone switches off during unloading and must "wake up" at the right
+  element and the right step on reverse and re-loading.
+- Variants used along the way: an overloaded plate (ligament fully yielded, the
+  unfavourable case), and a family of plates with other notch radii and heights for the
+  machine-learning study.
+
+These are deliberately simple parts: the goal is a controlled benchmark where every
+number can be checked against a full reference computation, not an industrial model.
+
 ## The idea in one picture
 
 Elastic elements respond **exactly linearly** (small strains). So between two load steps,
@@ -56,9 +85,30 @@ Three rules, one parameter (κ = 1):
    method (half the cost of an active element), so *not* checking is where the savings come
    from.
 
-The integrated set then follows the plastic zone, element by element, including through
-unloading and reloading (cyclic case: black = integrated, gold = checked only, white =
-skipped entirely):
+### On the parts
+
+The simulation results below are computed twice: once by the reference solver, which
+integrates every element at every iteration, and once by the exact method. The two
+force–displacement curves coincide (relative difference below 1e-12). The status map
+(bottom right) shows what the method actually computed at one reloading step: only the
+plastic elements (blue) are integrated; most elastic elements are either checked with
+the cheap elastic predictor (light orange) or skipped entirely (grey).
+
+![Notched plate: stress, plastic strain, force-displacement, element status](docs/figures/notched_plate_results.png)
+
+On the notched plate, plasticity starts at the notch root and spreads in two shear bands
+toward the clamped corners. At the step shown, only 7 % of the elements need integrating,
+but 72 % still need checking: checking is where the remaining cost lies.
+
+![Cantilever: stress, plastic strain, force-displacement, element status](docs/figures/cantilever_results.png)
+
+On the cantilever, plasticity stays in the top and bottom fibres near the clamp, and the
+hysteresis loop is wide. The elastic core and the free end are skipped entirely (56 % of
+the elements at the step shown).
+
+Over the whole history, the integrated set follows the plastic zone element by element,
+including through unloading and reloading (cyclic plate: black = integrated, gold =
+checked only, white = skipped entirely):
 
 ![Space-time map on the cyclic notched plate](results/phase2/cyclic_notched_kin_online_spacetime.png)
 
@@ -159,7 +209,8 @@ python experiments/phase0_baselines.py           # vs. the Sysala baseline
 python experiments/phase2_kappa_sweep.py         # exact method, κ ∈ {0, 0.5, 1, 2}, 4 cases (~10 min)
 python experiments/phase2_maps.py                # space-time maps
 python experiments/oracle_vs_online.py           # ceilings vs. achieved
-python experiments/make_figures.py               # README figures, from stored results only
+python experiments/make_figures.py               # summary figures, from stored results only
+python experiments/case_figures.py               # test parts and simulation results on the mesh (~1 min)
 ```
 
 Operation counters are deterministic; unit costs are micro-benchmarked on your machine,
